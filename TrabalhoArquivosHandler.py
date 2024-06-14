@@ -34,6 +34,7 @@ class TrabalhoArquivosHandler():
          self.c_code_folder_path = c_code_folder_path
 
       self.__compile_c_code() #ver se o código deve ser mesmo compilado toda vez que a classe é instanciada 
+      print("c compilado")
       self.__get_os_specific_comands()
 
    def __compile_c_code(self)->None:

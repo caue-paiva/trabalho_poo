@@ -1,6 +1,5 @@
 from TrabalhoArquivosHandler import TrabalhoArquivosHandler
 
-
 __ArquivosHandler: TrabalhoArquivosHandler = TrabalhoArquivosHandler()
 
 class ClientMessagesHandler:
@@ -19,8 +18,10 @@ class ClientMessagesHandler:
    
    @staticmethod
    def run_functionality(message:str, client_addr:int)->str:
-      funct_params:dict = ClientMessagesHandler._split_messages(message)
+      data_file_name: str = f"dado_{client_addr}.bin"
+      index_file_name: str = f"index_{client_addr}.bin"
 
+      funct_params:dict = ClientMessagesHandler._split_messages(message)
       functionality:str = funct_params.get("functionality","")
       if not functionality:
          raise IOError("messagem do socket deve conter uma funcionalidade do trabalho de arquivos")
@@ -29,8 +30,8 @@ class ClientMessagesHandler:
 
          case "1": #criar arquivo bin
             pass
-         case "2":
-            pass
+         case "2": #printa todos jogadores
+            __ArquivosHandler.show_all_players()
          case "3":
             pass
 
