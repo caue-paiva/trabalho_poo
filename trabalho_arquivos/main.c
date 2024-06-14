@@ -68,7 +68,7 @@ int main(){
                misc_binarioNaTela(nome_bin_buffer);
                misc_binarioNaTela(nome_index_buffer);
             }else  //senão printa msg de erro
-               printf(DEFAULT_ERROR_MSG);
+               printf("Registro inexistente.");
          break;
 
 
@@ -82,7 +82,7 @@ int main(){
                misc_binarioNaTela(nome_bin_buffer);  //printa binario na tela
                misc_binarioNaTela(nome_index_buffer);
             }else //falha em criar index
-               printf(DEFAULT_ERROR_MSG);
+               printf("Falha na inserção");
        
          break;
 
