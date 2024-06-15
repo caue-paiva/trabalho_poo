@@ -10,8 +10,7 @@ class TrabalhoArquivosHandler():
 
    operating_system:str 
    run_exec_cmd:str
-   pipe_in_cmd:str
-   pipe_out_comand:str
+   delete_files_cmd:str
 
    c_code_folder_path:str
    index_file_name:str
@@ -51,8 +50,10 @@ class TrabalhoArquivosHandler():
    def __get_os_specific_comands(self)->None:
       if self.operating_system == "linux":
          self.run_exec_cmd = f"./{self.EXEC_NAME}"
+         self.delete_files_cmd = f"rm -f "
       else: #so é windows
          self.run_exec_cmd = f"{self.EXEC_NAME}"
+         self.delete_files_cmd = f"del /f "
 
    def __run_command(self,stdin:str)->str:
       """
@@ -78,8 +79,8 @@ class TrabalhoArquivosHandler():
       self.index_file_name = index_file_name
       self.data_file_name = data_file_name
       
-   def show_all_players(self,binary_file_name:str)->str:
-      show_all_players_cmd: str = f"2 {binary_file_name}"
+   def show_all_players(self,binary_data_file_name:str)->str:
+      show_all_players_cmd: str = f"2 {binary_data_file_name}"
       return self.__run_command(show_all_players_cmd)
 
    def search_players(self,binary_file_name:str,player_fields:dict[str,str|int])->str:
@@ -185,6 +186,19 @@ class TrabalhoArquivosHandler():
       
       return True      
 
+   def delete_binary_files(self,binary_file_name:str,index_file_name:str)->bool:
+      """
+      Deleta o arquivo binário de dados e de índice passados como parâmetro
+      
+      """
+      if ".bin" not in binary_file_name or ".bin" not in index_file_name:
+         print("ERRO: A função de remoção de arquivos binários recebeu nomes de arquivos sem o .bin como parâmetro")
+         return False
+
+      delete_files_cmd: str =f"{self.delete_files_cmd} {binary_file_name} {index_file_name}"
+      self.__run_command(delete_files_cmd)
+
+      return True
 
 #print(handler.show_all_players("dado1.bin"))
    #print(handler.search_players("dado1.bin",{"country":"germany","id": 224424})) #procura antes remoção

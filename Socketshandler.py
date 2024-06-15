@@ -1,4 +1,5 @@
 import socket, threading , os
+from ClientMessagesHandler import ClientMessagesHandler
 
 class SocketsHandler():
 
@@ -42,14 +43,23 @@ class SocketsHandler():
                return ip
    
    def __handle_one_client(self,client: socket.socket, addr:int)->None:
+      client_handler:ClientMessagesHandler = ClientMessagesHandler(addr)
       while True:
          try:
             message:str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
             print(f"recebeu mensagem : {message} do addr {addr}")
+            action_result: str = client_handler.run_functionality(message)
+            print(f"resultado da funcionalidade pedida: {action_result}")
+         
          except:
             removed_addr = self.clients.pop(client) #remove cliente
-            client.close()
+            client.close()#fecha conexão com cliente
+            
             print(f"endereço removido {str(removed_addr[1])}")
+            remove_result:bool = client_handler.remove_client_data() #remove os arquivos binários relacionados ao cliente
+            if not remove_result: #falha na remoção desses arquivos
+               print("falha ao remover arquivos do cliente que desligou a conexão")
+            break #sai do loop
 
    def receive_messages(self)->None:
       print("server está ouvindo")
