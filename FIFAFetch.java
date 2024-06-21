@@ -3,6 +3,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List; // Add this import statement
+
+
+
 
 public class FIFAFetch {
     private String serverAddress;
@@ -13,7 +17,7 @@ public class FIFAFetch {
         this.serverPort = serverPort;
     }
 
-    public String sendRequest(String request) {
+    public String __auxSendRequest(String request) {
         String response = "";
         try (Socket socket = new Socket(serverAddress, serverPort);
              PrintWriter out_put = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
@@ -28,4 +32,12 @@ public class FIFAFetch {
         }
         return response;
     }
+
+
+    public List<FIFAPlayer> sendRequest(String request){
+        String return_str = this.__auxSendRequest(request);
+        return FIFAPlayer.parsePlayers(return_str);
+    }
+    
+
 }
