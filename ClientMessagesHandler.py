@@ -1,9 +1,10 @@
 from TrabalhoArquivosHandler import TrabalhoArquivosHandler
 
-__ArquivosHandler: TrabalhoArquivosHandler = TrabalhoArquivosHandler() #objeto singleton interno do módulo, é  a interface com o trabalho de arquivo
 
 
 class ClientMessagesHandler:
+
+   __ArquivosHandler: TrabalhoArquivosHandler = TrabalhoArquivosHandler() #objeto singleton interno do módulo, é  a interface com o trabalho de arquivo
 
    client_addr:int #endereço do cliente
    client_bin_data_file:str #nome do arquivo de dados e índice do cliente
@@ -14,7 +15,7 @@ class ClientMessagesHandler:
       self.client_bin_data_file = f"{client_addr}_dados.bin"
       self.client_bin_index_file = f"{client_addr}_index.bin"
 
-   def __split_messages(message:str)->dict:
+   def __split_messages(self, message:str)->dict:
       list_of_params:list[str] = message.split(",")
 
       return_dict:dict[str,str|int] = {}
@@ -39,28 +40,28 @@ class ClientMessagesHandler:
             pass
          
          case "2": #printa todos jogadores
-            return __ArquivosHandler.show_all_players(self.client_bin_data_file)
+            return self.__ArquivosHandler.show_all_players(self.client_bin_data_file)
          
          case "3": #procura jogador(es)
-            return __ArquivosHandler.search_players(self.client_bin_data_file,funct_params)
+            return self.__ArquivosHandler.search_players(self.client_bin_data_file,funct_params)
          
          case "5": #deleta um jogador
-            result:bool =  __ArquivosHandler.delete_players(self.client_bin_data_file,self.client_bin_index_file,funct_params)
+            result:bool =  self.__ArquivosHandler.delete_players(self.client_bin_data_file,self.client_bin_index_file,funct_params)
             return "True" if result else ""
          
          case "6": #insere um jogador
-            result:bool  = __ArquivosHandler.insert_player(self.client_bin_data_file,self.client_bin_index_file,funct_params)
+            result:bool  = self.__ArquivosHandler.insert_player(self.client_bin_data_file,self.client_bin_index_file,funct_params)
             return "True" if result else ""
          
          case "7": #atualiza um jogador
-            result: bool = __ArquivosHandler.update_player(self.client_bin_data_file,self.client_bin_index_file,funct_params)
+            result: bool = self.__ArquivosHandler.update_player(self.client_bin_data_file,self.client_bin_index_file,funct_params)
             return "True" if result else ""
          
    def remove_client_data(self)->bool:
       """
       Remove os arquivos binários relativos ao cliente, usado quando o cliente encerra uma conexão
       """
-      return __ArquivosHandler.delete_binary_files(self.client_bin_data_file,self.client_bin_index_file)
+      return self.__ArquivosHandler.delete_binary_files(self.client_bin_data_file,self.client_bin_index_file)
 
    
 
