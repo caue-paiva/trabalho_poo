@@ -93,7 +93,11 @@ class TrabalhoArquivosHandler():
          club=player_fields.get("club","")
       )
 
+      print(search_params)
+      print(search_info)
+
       search_cmd: str = f"{search_info} \n{search_params}"
+      print(search_cmd)
       return self.__run_command(search_cmd)
    
    def __format_player_info(self, is_insertion:bool = False ,id:int = -1,age:int = -1,name:str = "",country:str ="" ,club:str = "")->str:
@@ -102,9 +106,9 @@ class TrabalhoArquivosHandler():
          fields = [
             f"id {id}" if id != -1 else "",
             f"idade {age}" if age != -1 else "",
-            f'nomeJogador "{name.upper()}"' if name != "" else "",
-            f'nacionalidade "{country.upper()}"' if country != "" else "",
-            f'nomeClube "{club.upper()}"' if club != "" else "",
+            f'nomeJogador "{name.upper().strip()}"' if name != "" else "",
+            f'nacionalidade "{country.upper().strip()}"' if country != "" else "",
+            f'nomeClube "{club.upper().strip()}"' if club != "" else "",
          ]
 
          valid_fields:list[str] = list(filter(lambda x: x != "", fields)) #filtra apenas os campos válidos

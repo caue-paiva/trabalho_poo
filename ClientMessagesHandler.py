@@ -15,6 +15,8 @@ class ClientMessagesHandler:
       self.client_bin_data_file = f"{client_addr}_dados.bin"
       self.client_bin_index_file = f"{client_addr}_index.bin"
 
+      self.__ArquivosHandler.csv_to_binary(self.client_bin_data_file,self.client_bin_index_file)
+
    def __split_messages(self, message:str)->dict:
       list_of_params:list[str] = message.split(",")
 
