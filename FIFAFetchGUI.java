@@ -59,8 +59,8 @@ public class FIFAFetchGUI {
         frame.setVisible(true);
 
         // Setup connection
-        String serverAddress = JOptionPane.showInputDialog(frame, "Enter server address:", "Server Connection", JOptionPane.QUESTION_MESSAGE);
-        int serverPort = Integer.parseInt(JOptionPane.showInputDialog(frame, "Enter server port:", "Server Connection", JOptionPane.QUESTION_MESSAGE));
+        String serverAddress = "127.0.0.1";
+        int serverPort = 9090;
         fifaFetch = new FIFAFetch(serverAddress, serverPort);
     }
 
@@ -72,11 +72,16 @@ public class FIFAFetchGUI {
         String club = clubField.getText();
 
         StringBuilder request = new StringBuilder("functionality:3");
-        if (!id.isEmpty()) request.append(",id:").append(id);
-        if (!age.isEmpty()) request.append(",age:").append(age);
-        if (!name.isEmpty()) request.append(",name:").append(name);
-        if (!nationality.isEmpty()) request.append(",nationality:").append(nationality);
-        if (!club.isEmpty()) request.append(",club:").append(club);
+        if (!id.isEmpty())
+            request.append(",id:").append(id);
+        if (!age.isEmpty())
+            request.append(",age:").append(age);
+        if (!name.isEmpty())
+            request.append(",name:").append(name);
+        if (!nationality.isEmpty())
+            request.append(",nationality:").append(nationality);
+        if (!club.isEmpty())
+            request.append(",club:").append(club);
 
         String response = fifaFetch.sendRequest(request.toString());
         System.out.println(response);
