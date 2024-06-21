@@ -2,11 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class FIFAFetchGUI {
     private static JTextField idField, ageField, nameField, countryField, clubField;
     private static JTextArea resultArea;
     private static FIFAFetch fifaFetch;
+    private static List<FIFAPlayer> playersList;
 
     public static void createAndShowGUI() {
         JFrame frame = new JFrame("FIFA Player Fetch");
@@ -83,8 +85,28 @@ public class FIFAFetchGUI {
         if (!club.isEmpty())
             request.append(",club:").append(club);
 
-        String response = fifaFetch.sendRequest(request.toString());
-        System.out.println(response);
-        resultArea.setText(response);
+        List<FIFAPlayer> players = fifaFetch.sendRequest(request.toString());
+        System.out.println(players);
+        playersList = players;
+        //System.out.println(response);
+        //resultArea.setText(response);
+    }
+
+
+    public static void updatePlayerInList(int id, FIFAPlayer newInfo) {
+        if (playersList == null) {
+            return;
+        }
+
+        FIFAPlayer.updatePlayerInList(playersList, id, newInfo); //atualiza o cara na lista
+        
+        StringBuilder request = new StringBuilder("functionality:7");
+      
+        request.append(",id:").append(id); //id do cara não muda
+        request.append(",age:").append(newInfo.age); //coloca os campos 
+        request.append(",name:").append(newInfo.name);
+        request.append(",country:").append(newInfo.country);
+        request.append(",club:").append(newInfo.club);
+        
     }
 }

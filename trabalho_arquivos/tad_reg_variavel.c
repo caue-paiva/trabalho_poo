@@ -104,6 +104,7 @@ void rgt_registro_print(const Registro* registro){
    printf("Nome do Jogador: %s\n", nome_buffer);
    printf("Nacionalidade do Jogador: %s\n", nacionali_buffer);
    printf("Clube do Jogador: %s\n", clube_buffer);
+   printf("Id do jogador: %d\n",registro->id);
    printf("\n");
 }
 

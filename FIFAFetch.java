@@ -25,14 +25,13 @@ public class FIFAFetch {
 
             out_put.println(request);
             response = in_put.readLine();
-            System.out.println("RECEBA O JAVA: " + response);
+            //System.out.println("RECEBA O JAVA: " + response);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         return response;
     }
-
 
     public List<FIFAPlayer> sendRequest(String request){
         String return_str = this.__auxSendRequest(request);
