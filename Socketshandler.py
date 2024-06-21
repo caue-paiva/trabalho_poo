@@ -45,10 +45,12 @@ class SocketsHandler():
                 message: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
                 #print(f"recebeu mensagem : {message} do addr {addr}")
                 action_result: str = client_handler.run_functionality(message)
-                action_result = action_result.replace("\n","")
-                print(f"||resultado da funcionalidade pedida: {action_result}||")
+                action_result2 = action_result.replace("\n"," | ")
+                action_result2 = action_result2.replace("Busca 1","")
+                action_result2 = action_result2.replace("|","",1)
+                action_result2 = action_result2 + '\n'
 
-                encoded = action_result.encode("utf-8")
+                encoded = action_result2.encode("utf-8")
                 client.send(encoded)
 
             except:

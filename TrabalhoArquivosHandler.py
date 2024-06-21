@@ -95,6 +95,7 @@ class TrabalhoArquivosHandler():
 
 
       search_cmd: str = f"{search_info} \n{search_params}"
+      print(search_cmd)
       return self.__run_command(search_cmd)
    
    def __format_player_info(self, is_insertion:bool = False ,id:int = -1,age:int = -1,name:str = "",country:str ="" ,club:str = "")->str:

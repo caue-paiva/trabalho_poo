@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class FIFAFetchGUI {
-    private static JTextField idField, ageField, nameField, nationalityField, clubField;
+    private static JTextField idField, ageField, nameField, countryField, clubField;
     private static JTextArea resultArea;
     private static FIFAFetch fifaFetch;
 
@@ -22,8 +22,8 @@ public class FIFAFetchGUI {
         ageField = new JTextField();
         JLabel nameLabel = new JLabel("Name:");
         nameField = new JTextField();
-        JLabel nationalityLabel = new JLabel("Nationality:");
-        nationalityField = new JTextField();
+        JLabel countryLabel = new JLabel("country:");
+        countryField = new JTextField();
         JLabel clubLabel = new JLabel("Club:");
         clubField = new JTextField();
 
@@ -33,8 +33,8 @@ public class FIFAFetchGUI {
         panel.add(ageField);
         panel.add(nameLabel);
         panel.add(nameField);
-        panel.add(nationalityLabel);
-        panel.add(nationalityField);
+        panel.add(countryLabel);
+        panel.add(countryField);
         panel.add(clubLabel);
         panel.add(clubField);
 
@@ -68,7 +68,7 @@ public class FIFAFetchGUI {
         String id = idField.getText();
         String age = ageField.getText();
         String name = nameField.getText();
-        String nationality = nationalityField.getText();
+        String country = countryField.getText();
         String club = clubField.getText();
 
         StringBuilder request = new StringBuilder("functionality:3");
@@ -78,8 +78,8 @@ public class FIFAFetchGUI {
             request.append(",age:").append(age);
         if (!name.isEmpty())
             request.append(",name:").append(name);
-        if (!nationality.isEmpty())
-            request.append(",nationality:").append(nationality);
+        if (!country.isEmpty())
+            request.append(",country:").append(country);
         if (!club.isEmpty())
             request.append(",club:").append(club);
 
