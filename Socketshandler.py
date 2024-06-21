@@ -45,8 +45,11 @@ class SocketsHandler():
                 message: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
                 #print(f"recebeu mensagem : {message} do addr {addr}")
                 action_result: str = client_handler.run_functionality(message)
-                #print(f"resultado da funcionalidade pedida: {action_result}")
-                client.send(action_result.encode(self.ENCODING))
+                action_result = action_result.replace("\n","")
+                print(f"||resultado da funcionalidade pedida: {action_result}||")
+
+                encoded = action_result.encode("utf-8")
+                client.send(encoded)
 
             except:
                 removed_addr = self.clients.pop(client)  # remove cliente

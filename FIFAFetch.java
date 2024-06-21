@@ -21,7 +21,7 @@ public class FIFAFetch {
 
             out_put.println(request);
             response = in_put.readLine();
-            System.out.println(response);
+            System.out.println("RECEBA O JAVA: " + response);
 
         } catch (Exception e) {
             e.printStackTrace();
