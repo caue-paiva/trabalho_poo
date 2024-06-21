@@ -43,9 +43,9 @@ class SocketsHandler():
         while True:
             try:
                 message: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
-                print(f"recebeu mensagem : {message} do addr {addr}")
+                #print(f"recebeu mensagem : {message} do addr {addr}")
                 action_result: str = client_handler.run_functionality(message)
-                print(f"resultado da funcionalidade pedida: {action_result}")
+                #print(f"resultado da funcionalidade pedida: {action_result}")
                 client.send(action_result.encode(self.ENCODING))
 
             except:
@@ -68,7 +68,6 @@ class SocketsHandler():
 
             thread = threading.Thread(target=self.__handle_one_client, args=(client, adress[1]))  # cria um thread para cada cliente
             thread.start()  # executa a thread
-            print(self.clients_info())
 
     def clients_info(self) -> str:
         return str([str(address[1]) for address in self.clients.values()])
