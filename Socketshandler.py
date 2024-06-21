@@ -47,6 +47,7 @@ class SocketsHandler():
                 print(f"recebeu mensagem : {message} do addr {addr}")
                 action_result: str = client_handler.run_functionality(message)
                 print(f"resultado da funcionalidade pedida: {action_result}")
+                client.send(action_result.encode(self.ENCODING))
 
             except:
                 removed_addr = self.clients.pop(client)  # remove cliente

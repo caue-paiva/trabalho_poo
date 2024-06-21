@@ -16,11 +16,12 @@ public class FIFAFetch {
     public String sendRequest(String request) {
         String response = "";
         try (Socket socket = new Socket(serverAddress, serverPort);
-             PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+             PrintWriter out_put = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
+             BufferedReader in_put = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-            out.println(request);
-            response = in.readLine();
+            out_put.println(request);
+            response = in_put.readLine();
+            System.out.println(response);
 
         } catch (Exception e) {
             e.printStackTrace();
