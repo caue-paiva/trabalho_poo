@@ -79,6 +79,7 @@ public class FIFAFetchGUI {
         if (!club.isEmpty()) request.append(",club:").append(club);
 
         String response = fifaFetch.sendRequest(request.toString());
+        System.out.println(response);
         resultArea.setText(response);
     }
 }

@@ -5,19 +5,18 @@ class SocketsHandler():
     PORT = 9090
     MSG_BUFFER_SIZE = 1024
     ENCODING = "utf-8"
+    LOCAL_IP:str = "127.0.0.1"
 
     server: socket.socket
-    local_ip: str
     clients: dict
 
     def __init__(self) -> None:
-        self.local_ip = self.__get_local_ip()
-        print(f"Server IP: {self.local_ip}")
+        print(f"Server IP: {self.LOCAL_IP}")
         print(f"Server Port: {self.PORT}")
 
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # cria uma socket do tipo AF_INET (ipv4) e do tipo sock_stream (TCP)
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # reusa a socket se ela já estiver aberta
-        self.server.bind((self.local_ip, self.PORT))
+        self.server.bind((self.LOCAL_IP, self.PORT))
         self.server.listen()
 
         self.clients = {}  # inicializa o dict de clientes como vazio
