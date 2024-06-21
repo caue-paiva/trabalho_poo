@@ -21,23 +21,6 @@ class SocketsHandler():
 
         self.clients = {}  # inicializa o dict de clientes como vazio
 
-    def __get_local_ip(self) -> str:
-        if os.name.lower() == "posix":  # caso do linux
-            hostname = socket.gethostname()
-            local_ip = socket.gethostbyname(hostname)  # esse método pode não funcionar no windows
-            return local_ip
-        else:  # caso do windows
-            ip: str = ""
-            socket_temp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # cria uma socket temp para conectar a outro ip e pegar o ip local
-            try:
-                socket_temp.connect(('10.254.254.254', 1))  # usa um outro IP sem possibilidade de rotear para achar o endereço de IP local
-                ip = socket_temp.getsockname()[0]
-            except Exception:
-                ip = '127.0.0.1'  # caso padrão
-            finally:
-                socket_temp.close()
-            return ip
-
     def __handle_one_client(self, client: socket.socket, addr: int) -> None:
         client_handler: ClientMessagesHandler = ClientMessagesHandler(addr)
         while True:
@@ -45,9 +28,9 @@ class SocketsHandler():
                 message: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
                 #print(f"recebeu mensagem : {message} do addr {addr}")
                 action_result: str = client_handler.run_functionality(message)
-                action_result2 = action_result.replace("\n"," | ")
-                action_result2 = action_result2.replace("Busca 1","")
-                action_result2 = action_result2.replace("|","",1)
+                action_result2 = action_result.replace("\n"," | ").replace("Busca 1","").replace("|","",1)
+               # action_result2 = action_result2.replace("Busca 1","")
+                #action_result2 = action_result2.replace("|","",1)
                 action_result2 = action_result2 + '\n'
 
                 encoded = action_result2.encode("utf-8")
