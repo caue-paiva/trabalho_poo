@@ -1,29 +1,34 @@
-# makefile para compilar o frontend em Java e executar o backend em Python e o frontend
+# Makefile para compilar o frontend em Java e executar o backend em Python e o frontend
 
-# diretório para os arquivos .class
+# Diretório para os arquivos .class
 OUT_DIR = out
 
-# lista de arquivos Java
+# Lista de arquivos Java
 JAVA_FILES = Main.java FIFAFetch.java FIFAFetchGUI.java
 
-# compilação do frontend em Java
+# Compilação do frontend em Java
 .PHONY: all
 all: compile
 
 compile: $(OUT_DIR)
 	javac -d $(OUT_DIR) $(JAVA_FILES)
 
-# criação do diretório de saída para os arquivos .class
+# Criação do diretório de saída para os arquivos .class
 $(OUT_DIR):
 	mkdir -p $(OUT_DIR)
 
-# execução do backend em Python e do frontend em Java
+# Execução do backend em Python e do frontend em Java
 .PHONY: run
-run:
+run: kill_python
 	python3 Socketshandler.py &
 	java -cp $(OUT_DIR) Main
 
-# lipando os  arquivos .class gerados pela compilação do Java
+# Finaliza qualquer processo Python em execução
+.PHONY: kill_python
+kill_python:
+	pkill -f Socketshandler.py || true
+
+# Limpeza dos arquivos .class gerados pela compilação do Java
 .PHONY: clean
 clean:
 	rm -rf $(OUT_DIR)
