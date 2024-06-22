@@ -5,6 +5,8 @@ OUT_DIR = out
 
 # lista de arquivos Java
 JAVA_FILES = Main.java FIFAFetch.java FIFAFetchGUI.java
+
+#diretório com os arquivos em c do trabalho de arquivos
 C_FILE_DIR =trabalho_arquivos
 
 # compilação do frontend em Java e execução do backend em Python
