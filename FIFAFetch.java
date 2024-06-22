@@ -52,6 +52,24 @@ public class FIFAFetch {
     }
 
     public Boolean removePlayer(String request){
+        if (!request.contains("5")){ //5 é o código da funcionalidade de remoção
+            return false;
+        }
+
+        String return_str = this.SendRequest(request);
+        if (return_str.contains("True")){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Boolean updatePlayer(String request){
+        if (!request.contains("7")){ //7 é o código da funcionalidade da atualização
+            return false;
+        }
+        System.out.println(request);
+
         String return_str = this.SendRequest(request);
         if (return_str.contains("True")){
             return true;

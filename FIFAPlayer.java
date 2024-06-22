@@ -26,7 +26,7 @@ public class FIFAPlayer {
 
    @Override
     public String toString() {
-        return "{ Nome do Jogador: " + name + " | Nacionalidade do Jogador: " + country + " | Clube do Jogador: " + club + " | ID: " + id +" }";
+        return "{ Nome do Jogador: " + name + " | Nacionalidade do Jogador: " + country + " | Clube do Jogador: " + club + " | ID: " + id +  " | Idade: " + age +" }";
     }
 
    static List<FIFAPlayer> parsePlayers(String received_message){
@@ -58,6 +58,8 @@ public class FIFAPlayer {
                 cur_player.club = field_val;
             } else if (part.contains("Id do jogador")){
                 cur_player.id = Integer.parseInt(field_val);
+            } else if (part.contains("Idade")){
+                cur_player.age = Integer.parseInt(field_val);
                 lista_joga.add(cur_player);
                 cur_player = new FIFAPlayer();
             }

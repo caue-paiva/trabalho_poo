@@ -91,6 +91,7 @@ public class FIFAFetchGUI {
         if (players == null) {
             resultPanel.add(new JLabel("Jogador(es) não encontrado(s).")); // texto falando que nenhum jogador foi encontrado
         } else {
+            System.out.println(players);
             FIFAFetchGUI.playersList = players;
             FIFAFetchGUI.showPlayersButtons();
         }
@@ -120,8 +121,7 @@ public class FIFAFetchGUI {
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Implement update player functionality here
-                JOptionPane.showMessageDialog(playerFrame, "Player " + player.name + " updated.");
+                FIFAFetchGUI.updatePlayer(player, playerFrame);
                 playerFrame.dispose();
             }
         });
@@ -163,21 +163,94 @@ public class FIFAFetchGUI {
 
     }
 
-    public static void updatePlayerInList(int id, FIFAPlayer newInfo) {
+    private static void updatePlayer(FIFAPlayer player, JFrame playerFrame){
+        JFrame updateFrame = new JFrame("Atualizar jogador");
+        updateFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        updateFrame.setSize(400, 300);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(5, 2)); // Adjust grid layout to fit all components
+
+        // Name field
+        JLabel nameLabel = new JLabel("Name:");
+        JTextField nameField = new JTextField();
+        nameField.setText(player.name); // Set default value
+        panel.add(nameLabel);
+        panel.add(nameField);
+
+        // Age field
+        JLabel ageLabel = new JLabel("Age:");
+        JTextField ageField = new JTextField();
+        ageField.setText(String.valueOf(player.age)); // Set default value
+        panel.add(ageLabel);
+        panel.add(ageField);
+
+        // Country field
+        JLabel countryLabel = new JLabel("Country:");
+        JTextField countryField = new JTextField();
+        countryField.setText(player.country); // Set default value
+        panel.add(countryLabel);
+        panel.add(countryField);
+
+        // Club field
+        JLabel clubLabel = new JLabel("Club:");
+        JTextField clubField = new JTextField();
+        clubField.setText(player.club); // Set default value
+        panel.add(clubLabel);
+        panel.add(clubField);
+
+        // botão de submeter
+        JButton submitButton = new JButton("Atualizar");
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = nameField.getText();
+                String country = countryField.getText();
+                String club = clubField.getText();
+                String age = ageField.getText();
+
+                StringBuilder update_request = new StringBuilder("functionality:7");
+                update_request.append(",id:").append(player.id);
+                if (!age.isEmpty())
+                    update_request.append(",age:").append(age);
+                if (!name.isEmpty())
+                    update_request.append(",name:").append(name);
+                if (!country.isEmpty())
+                    update_request.append(",country:").append(country);
+                if (!club.isEmpty())
+                    update_request.append(",club:").append(club);
+
+                Boolean result = fifaFetch.updatePlayer(update_request.toString());
+                if (result) {
+                    JOptionPane.showMessageDialog(playerFrame, "Atualização com sucesso");
+                } else {
+                    JOptionPane.showMessageDialog(playerFrame, "Atualização falhou");
+                }
+                FIFAFetchGUI.updatePlayerInList(player.id, name, country, club, Integer.parseInt(age));
+                updateFrame.dispose();
+            }
+        });
+        panel.add(new JLabel()); // Empty label for layout purposes
+        panel.add(submitButton);
+    
+        updateFrame.add(panel);
+        updateFrame.setVisible(true);
+    }
+
+    public static void updatePlayerInList(int id, String name, String country, String club, int age) {
         if (playersList == null) {
             return;
         }
-
-        FIFAPlayer.updatePlayerInList(playersList, id, newInfo); //atualiza o cara na lista
-        
-        StringBuilder request = new StringBuilder("functionality:7");
-      
-        request.append(",id:").append(id); //id do cara não muda
-        request.append(",age:").append(newInfo.age); //coloca os campos 
-        request.append(",name:").append(newInfo.name);
-        request.append(",country:").append(newInfo.country);
-        request.append(",club:").append(newInfo.club);
-        
+        for (FIFAPlayer player : FIFAFetchGUI.playersList) {
+            if (player.id == id) {
+                player.name = name;
+                player.country = country;
+                player.club = club;
+                player.age = age;
+                break;
+            }
+        }
+        FIFAFetchGUI.showPlayersButtons();
     }
 
 
