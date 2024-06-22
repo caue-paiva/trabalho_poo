@@ -10,6 +10,7 @@ public class FIFAFetchGUI {
     private static FIFAFetch fifaFetch;
     private static List<FIFAPlayer> playersList;
 
+    //cria e mostra a GUI
     public static void createAndShowGUI() {
         JFrame frame = new JFrame("FIFA Player Fetch");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,20 +61,19 @@ public class FIFAFetchGUI {
 
         frame.setVisible(true);
 
-        // Setup connection
-        String serverAddress = "127.0.0.1";
-        int serverPort = 9090;
-        fifaFetch = new FIFAFetch(serverAddress, serverPort);
+        // configura a conexão com o servidor, usa constantes padrão da classe FIFAFetch
+        fifaFetch = new FIFAFetch();
     }
 
+    //método bara buscar jogadores baseados nos parâmetros do campos de busca, ativado quando o botão de busca é clicado
     private static void searchPlayer() {
-        String id = idField.getText();
+        String id = idField.getText(); //pega valores dos campos
         String age = ageField.getText();
         String name = nameField.getText();
         String country = countryField.getText();
         String club = clubField.getText();
 
-        StringBuilder request = new StringBuilder("functionality:3");
+        StringBuilder request = new StringBuilder("functionality:3"); //constroi string pra request pro servidor
         if (!id.isEmpty())
             request.append(",id:").append(id);
         if (!age.isEmpty())
@@ -85,48 +85,48 @@ public class FIFAFetchGUI {
         if (!club.isEmpty())
             request.append(",club:").append(club);
 
-        List<FIFAPlayer> players = fifaFetch.getPlayers(request.toString());
+        List<FIFAPlayer> players = fifaFetch.getPlayers(request.toString()); //request pro servido, retorna uma lista de Players
         resultPanel.removeAll(); // limpa resultados anteriores
 
         if (players == null) {
             resultPanel.add(new JLabel("Jogador(es) não encontrado(s).")); // texto falando que nenhum jogador foi encontrado
         } else {
-            System.out.println(players);
-            FIFAFetchGUI.playersList = players;
-            FIFAFetchGUI.showPlayersButtons();
+            FIFAFetchGUI.playersList = players; //seta variável estática com a lista de jogadores
+            FIFAFetchGUI.showPlayersButtons(); //atualiza GUI com os jogadores buscados
         }
 
         resultPanel.revalidate();
-        resultPanel.repaint();
+        resultPanel.repaint(); //mostra GUI nova
     }
 
+    //função chamada quando alguém clica no botão de cada jogador mostrado na GUI
     private static void openPlayerWindow(FIFAPlayer player) {
-        JFrame playerFrame = new JFrame(player.name);
+        JFrame playerFrame = new JFrame(player.name); //cria frame, seta o tamanho e layout de grid
         playerFrame.setSize(300, 200);
         playerFrame.setLayout(new GridLayout(3, 1));
 
-        JLabel nameLabel = new JLabel("Jogador: " + player.name + "com id: " + player.id);
+        JLabel nameLabel = new JLabel("Jogador: " + player.name + "com id: " + player.id); //label de identificação do jogador
         playerFrame.add(nameLabel);
 
-        JButton removeButton = new JButton("Remover Jogador");
+        JButton removeButton = new JButton("Remover Jogador"); //opção de remover jogador
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 FIFAFetchGUI.removePlayer(player.id, playerFrame);
             }
         });
-        playerFrame.add(removeButton);
+        playerFrame.add(removeButton); //add botão de remover
 
-        JButton updateButton = new JButton("Update Player");
+        JButton updateButton = new JButton("Update Player");  //opção de atualizar jogador
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                FIFAFetchGUI.updatePlayer(player, playerFrame);
+                FIFAFetchGUI.updatePlayer(player, playerFrame); //função de atualizar jogador
                 playerFrame.dispose();
             }
         });
-        playerFrame.add(updateButton);
-        playerFrame.setVisible(true);
+        playerFrame.add(updateButton); //add o botão de atualizar 
+        playerFrame.setVisible(true); //deixa o frame como visível
     }
 
     //atualiza a GUI com a lista de botões dos jogadores contidos na lista da variável estática playersList
@@ -137,15 +137,16 @@ public class FIFAFetchGUI {
             playerButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    openPlayerWindow(player);
+                    openPlayerWindow(player); //caso alguém clique no botão desse jogador, abre essa janela
                 }
             });
-            resultPanel.add(playerButton);
+            resultPanel.add(playerButton); //add o botão no painel
         }
         resultPanel.revalidate(); //atualiza a GUI
         resultPanel.repaint();
     }
 
+    //método para remover um jogador, faz request pro servidor
     private static void removePlayer(int id, JFrame playerFrame){
         StringBuilder remove_request = new StringBuilder("functionality:5");
         remove_request.append(",id:").append(id);
@@ -163,53 +164,54 @@ public class FIFAFetchGUI {
 
     }
 
+    //método para atualizar um jogador, faz request pro servidor
     private static void updatePlayer(FIFAPlayer player, JFrame playerFrame){
         JFrame updateFrame = new JFrame("Atualizar jogador");
         updateFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         updateFrame.setSize(400, 300);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 2)); // Adjust grid layout to fit all components
+        JPanel panel = new JPanel(); //cria novo painel para escrever os campos de atualização
+        panel.setLayout(new GridLayout(5, 2)); // layout de grid
 
-        // Name field
+        // campo do nome
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField();
-        nameField.setText(player.name); // Set default value
+        nameField.setText(player.name); // valor padrão já existente
         panel.add(nameLabel);
         panel.add(nameField);
 
-        // Age field
+        // campo da idade
         JLabel ageLabel = new JLabel("Age:");
         JTextField ageField = new JTextField();
-        ageField.setText(String.valueOf(player.age)); // Set default value
+        ageField.setText(String.valueOf(player.age)); // valor padrão
         panel.add(ageLabel);
         panel.add(ageField);
 
-        // Country field
+        // campo do país
         JLabel countryLabel = new JLabel("Country:");
         JTextField countryField = new JTextField();
-        countryField.setText(player.country); // Set default value
+        countryField.setText(player.country); // valor padrão
         panel.add(countryLabel);
         panel.add(countryField);
 
-        // Club field
+        //campo do clube
         JLabel clubLabel = new JLabel("Club:");
         JTextField clubField = new JTextField();
-        clubField.setText(player.club); // Set default value
+        clubField.setText(player.club); // valor padrão
         panel.add(clubLabel);
         panel.add(clubField);
 
-        // botão de submeter
+        // botão de submeter a atualização
         JButton submitButton = new JButton("Atualizar");
         submitButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) { //função para executar quando o botão de atualizar for clicado
                 String name = nameField.getText();
-                String country = countryField.getText();
+                String country = countryField.getText(); //pega o texto dos campos
                 String club = clubField.getText();
                 String age = ageField.getText();
 
-                StringBuilder update_request = new StringBuilder("functionality:7");
+                StringBuilder update_request = new StringBuilder("functionality:7"); //cria a string da request pro servidor
                 update_request.append(",id:").append(player.id);
                 if (!age.isEmpty())
                     update_request.append(",age:").append(age);
@@ -220,37 +222,38 @@ public class FIFAFetchGUI {
                 if (!club.isEmpty())
                     update_request.append(",club:").append(club);
 
-                Boolean result = fifaFetch.updatePlayer(update_request.toString());
-                if (result) {
+                Boolean result = fifaFetch.updatePlayer(update_request.toString()); //manda request para o server
+                if (result) { //pop-up de sucesso ou falha
                     JOptionPane.showMessageDialog(playerFrame, "Atualização com sucesso");
                 } else {
                     JOptionPane.showMessageDialog(playerFrame, "Atualização falhou");
                 }
-                FIFAFetchGUI.updatePlayerInList(player.id, name, country, club, Integer.parseInt(age));
+                FIFAFetchGUI.updatePlayersList(player.id, name, country, club, Integer.parseInt(age)); //atualiza a GUI com a  mudança nova
                 updateFrame.dispose();
             }
         });
-        panel.add(new JLabel()); // Empty label for layout purposes
-        panel.add(submitButton);
+        panel.add(new JLabel()); 
+        panel.add(submitButton); //coloca botão de submeter a atualização
     
-        updateFrame.add(panel);
-        updateFrame.setVisible(true);
+        updateFrame.add(panel); 
+        updateFrame.setVisible(true); //coloca o frame como visível
     }
 
-    public static void updatePlayerInList(int id, String name, String country, String club, int age) {
-        if (playersList == null) {
+    //atualiza a lista de jogadores na GUI com as novas informações
+    public static void updatePlayersList(int id, String name, String country, String club, int age) {
+        if (playersList == null) { //lista null
             return;
         }
-        for (FIFAPlayer player : FIFAFetchGUI.playersList) {
-            if (player.id == id) {
-                player.name = name;
+        for (FIFAPlayer player : FIFAFetchGUI.playersList) { //loop pela lista de players
+            if (player.id == id) { //achou o cara certo
+                player.name = name; //atualiza as informações
                 player.country = country;
                 player.club = club;
                 player.age = age;
                 break;
             }
         }
-        FIFAFetchGUI.showPlayersButtons();
+        FIFAFetchGUI.showPlayersButtons(); //atualiza lista de botões na GUI
     }
 
 

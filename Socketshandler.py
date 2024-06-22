@@ -27,13 +27,13 @@ class SocketsHandler():
     def __handle_one_client(self, client: socket.socket, client_handler: ClientMessagesHandler) -> None:
         while True:
             try:
-                message: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
-                action_result: str = client_handler.run_functionality(message)
-                action_result2 = action_result.replace("\n"," | ").replace("Busca 1","").replace("|","",1)
-                action_result2 = action_result2 + '\n'
+                message: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING) #recebe mensagem do cliente
+                action_result: str = client_handler.run_functionality(message) #roda funcionalidade do trabalho de arquivos
+                action_result2 = action_result.replace("\n"," | ").replace("Busca 1","").replace("|","",1) #parsing na string
+                action_result2 = action_result2 + '\n' #coloca \n no final da str para servir como o delimitador final
 
-                encoded = action_result2.encode("utf-8")
-                client.send(encoded)
+                encoded = action_result2.encode("utf-8") 
+                client.send(encoded) #manda mensagem para o cliente
 
             except:
                 removed_addr = self.clients.pop(client)  # remove cliente
@@ -54,14 +54,12 @@ class SocketsHandler():
         
             if self.client_id == -1: #não tem id do cliente
                 identification: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING) #recebe id do cliente
-                self.client_id: int = int(identification) #seta id do cliente
+                self.client_id: int = int(identification) #configura id do cliente
                 client_handler = ClientMessagesHandler(self.client_id) #instancia o handler do cliente
                 
             print(f"conectou com endereço {str(adress[1])}")
             self.clients[client] = adress  # add cliente e seu endereço ao dict de clientes
             self.__handle_one_client(client,client_handler)
-
-            
 
     def clients_info(self) -> str:
         return str([str(address[1]) for address in self.clients.values()])

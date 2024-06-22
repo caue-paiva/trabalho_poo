@@ -8,6 +8,7 @@ public class FIFAPlayer {
    public String country;
    public String club;
 
+   //construtor da classe com todos os campos
    public FIFAPlayer(int id, int age, String name, String country, String club) {
        this.id = id;
        this.age = age;
@@ -16,6 +17,7 @@ public class FIFAPlayer {
        this.club = club;
    }
 
+   //construtor da classe sem argumentos, valores padronizados para representar campos vazios
    public FIFAPlayer(){
          this.id = -1;
          this.age = -1;
@@ -24,33 +26,31 @@ public class FIFAPlayer {
          this.club = "";
    }
 
+   //printa o objeto jogador
    @Override
     public String toString() {
         return "{ Nome do Jogador: " + name + " | Nacionalidade do Jogador: " + country + " | Clube do Jogador: " + club + " | ID: " + id +  " | Idade: " + age +" }";
     }
 
+   //dado uma string retornada do servidor, dá parsing nela campo a campo e retorna uma lista de objetos FIFAPlayer que representa o retorno
+   //da função de busca no arquivo
    static List<FIFAPlayer> parsePlayers(String received_message){
-        System.out.println(received_message);
-        String[] parts = received_message.split("\\|");
-        List<FIFAPlayer> lista_joga = new ArrayList<FIFAPlayer>();
 
-        FIFAPlayer cur_player = new FIFAPlayer();
+        String[] parts = received_message.split("\\|"); //split na string pelo delimitador |
+        List<FIFAPlayer> lista_joga = new ArrayList<FIFAPlayer>(); //lista de jogadores
 
-        // Process each part
+        FIFAPlayer cur_player = new FIFAPlayer(); //jogador atual
 
-        for (String part : parts) {
-            // Trim the part to remove any leading or trailing whitespace
-            part = part.trim();
+        for (String part : parts) { //processa cada parte da string  retornada pelo server
+            part = part.trim(); //tira whitespace no final e começo
             
-
-            // Skip empty parts
-            if (part.isEmpty()) {
+            if (part.isEmpty()) { //pula strings vazias
                 continue;
             }
 
-            String field_val = part.split(":")[1].trim();
+            String field_val = part.split(":")[1].trim(); //pega o valor do campo
 
-            if (part.contains("Nome")){
+            if (part.contains("Nome")){ //ve qual o campo referido a atualiza o jogador atual
                 cur_player.name = field_val;   
             } else if (part.contains("Nacionalidade")){
                 cur_player.country = field_val;
@@ -58,38 +58,13 @@ public class FIFAPlayer {
                 cur_player.club = field_val;
             } else if (part.contains("Id do jogador")){
                 cur_player.id = Integer.parseInt(field_val);
-            } else if (part.contains("Idade")){
+            } else if (part.contains("Idade")){ //ultimo campo, vamos adicionar o jogador atual na lista e criar um novo jogador
                 cur_player.age = Integer.parseInt(field_val);
                 lista_joga.add(cur_player);
                 cur_player = new FIFAPlayer();
             }
         }
-        
-            return lista_joga;
+            return lista_joga; //retorna lista de jogadores
         }
-
-   static Boolean updatePlayerInList(List<FIFAPlayer> playerList, int id, FIFAPlayer newInfo){
-       for (FIFAPlayer p : playerList){ //loop pela lista de players
-           if (p.id == id){ //se o player atual for o player que queremos atualizar
-               p.age = newInfo.age; //atualiza campos
-               p.name = newInfo.name;
-               p.country = newInfo.country;
-               p.club = newInfo.club;
-               return true;
-           }
-       }
-       return false;
-
-   }
-
-   static Boolean removePlayerFromList(List<FIFAPlayer> playerList,int id){
-       for (FIFAPlayer p : playerList){
-           if (p.id == id){
-               playerList.remove(p);
-               return true;
-           }
-       }
-       return false;
-   }
 
 }
