@@ -24,9 +24,7 @@ class SocketsHandler():
 
         self.clients = {}  # inicializa o dict de clientes como vazio
 
-    def __handle_one_client(self, client: socket.socket) -> None:
-        client_handler: ClientMessagesHandler = ClientMessagesHandler(self.client_id)
-        
+    def __handle_one_client(self, client: socket.socket, client_handler: ClientMessagesHandler) -> None:
         while True:
             try:
                 message: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
@@ -49,7 +47,8 @@ class SocketsHandler():
 
     def receive_messages(self) -> None:
         print("server está ouvindo")
-        
+        client_handler: ClientMessagesHandler = None
+
         while True:
             client, adress = self.server.accept()  # aceita conexão com um cliente
             
@@ -57,10 +56,12 @@ class SocketsHandler():
                 identification: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
                 print(f"primeira vez: id do client: {identification}")
                 self.client_id: int = int(identification)
+                client_handler = ClientMessagesHandler(self.client_id)
+                
             
             print(f"conectou com endereço {str(adress[1])}")
             self.clients[client] = adress  # add cliente e seu endereço ao dict de clientes
-            self.__handle_one_client(client)
+            self.__handle_one_client(client,client_handler)
 
             
 

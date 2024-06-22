@@ -208,11 +208,3 @@ class TrabalhoArquivosHandler():
    #print(result)
    #print(handler.search_players("dado1.bin",{"country":"germany","id": 224424})) #procura depois
    #result:bool = handler.insert_player("dado1.bin","index1.bin",{"id":3,"age":24 ,"name": "D. CHORIN","country":"CHUNGUS"})
-
-if __name__ == "__main__":
-   handler = TrabalhoArquivosHandler()
-   handler.csv_to_binary("dado1.bin","index1.bin")
-   print(handler.search_players("dado1.bin",{"id": 224424})) #procura antes de atualizar
-   result:bool  = handler.update_player("dado1.bin","index1.bin",{"name":"AI QUE DELICIA O VERÃO","country":"germany","id": 224424})
-   print(result)
-   print(handler.search_players("dado1.bin",{"id": 224424})) #procura DPS de atualizar

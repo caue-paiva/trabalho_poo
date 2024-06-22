@@ -87,19 +87,22 @@ public class FIFAFetchGUI {
             request.append(",club:").append(club);
 
         List<FIFAPlayer> players = fifaFetch.getPlayers(request.toString());
-        playersList = players;
+        resultPanel.removeAll(); // limpa resultados anteriores
 
-        resultPanel.removeAll(); // Clear previous results
-
-        for (FIFAPlayer player : playersList) {
-            JButton playerButton = new JButton(player.name);
-            playerButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    openPlayerWindow(player);
-                }
-            });
-            resultPanel.add(playerButton);
+        if (players == null) {
+            resultPanel.add(new JLabel("Jogador(es) não encontrado(s).")); // texto falando que nenhum jogador foi encontrado
+        } else {
+            playersList = players;
+            for (FIFAPlayer player : playersList) {
+                JButton playerButton = new JButton(player.name);
+                playerButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        openPlayerWindow(player);
+                    }
+                });
+                resultPanel.add(playerButton);
+            }
         }
 
         resultPanel.revalidate();
@@ -111,10 +114,10 @@ public class FIFAFetchGUI {
         playerFrame.setSize(300, 200);
         playerFrame.setLayout(new GridLayout(3, 1));
 
-        JLabel nameLabel = new JLabel("Player: " + player.name + "with id: " + player.id);
+        JLabel nameLabel = new JLabel("Jogador: " + player.name + "com id: " + player.id);
         playerFrame.add(nameLabel);
 
-        JButton removeButton = new JButton("Remove Player");
+        JButton removeButton = new JButton("Remover Jogador");
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -144,7 +147,6 @@ public class FIFAFetchGUI {
         playerFrame.add(updateButton);
         playerFrame.setVisible(true);
     }
-
 
     public static void updatePlayerInList(int id, FIFAPlayer newInfo) {
         if (playersList == null) {

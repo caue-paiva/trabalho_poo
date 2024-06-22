@@ -27,16 +27,15 @@ public class FIFAFetch {
              PrintWriter out_put = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
              BufferedReader in_put = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-            if (!this.serverHasId){
+            if (!this.serverHasId){ //server não tem o id do cliente
                 out_put.println(CLIENT_ID); //manda o id do cliente
                 out_put.flush();
-                Thread.sleep(2000); 
+                Thread.sleep(2000); //da sleep para essa mensagem ser processada como uma mensagem separada pelo python
                 this.serverHasId = true;
             }
             out_put.println(request);
             out_put.flush();
             response = in_put.readLine();
-            //System.out.println("RECEBA O JAVA: " + response);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,6 +45,9 @@ public class FIFAFetch {
 
     public List<FIFAPlayer> getPlayers(String request){
         String return_str = this.SendRequest(request);
+        if (return_str.contains("inexistente")){
+            return null;
+        }
         return FIFAPlayer.parsePlayers(return_str);
     }
 
