@@ -9,6 +9,8 @@ class SocketsHandler():
 
     server: socket.socket
     clients: dict
+    client_id:int
+    has_client_id: bool
 
     def __init__(self) -> None:
         print(f"Server IP: {self.LOCAL_IP}")
@@ -18,15 +20,13 @@ class SocketsHandler():
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # reusa a socket se ela já estiver aberta
         self.server.bind((self.LOCAL_IP, self.PORT))
         self.server.listen()
+        self.client_id = -1
 
         self.clients = {}  # inicializa o dict de clientes como vazio
 
-    def __handle_one_client(self, client: socket.socket, addr: int) -> None:
-        identification: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
-        client_id: int = int(identification)
-        print(f"id do client: {client_id}")
-        client_handler: ClientMessagesHandler = ClientMessagesHandler(client_id)
-
+    def __handle_one_client(self, client: socket.socket) -> None:
+        client_handler: ClientMessagesHandler = ClientMessagesHandler(self.client_id)
+        
         while True:
             try:
                 message: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
@@ -49,14 +49,20 @@ class SocketsHandler():
 
     def receive_messages(self) -> None:
         print("server está ouvindo")
+        
         while True:
             client, adress = self.server.accept()  # aceita conexão com um cliente
+            
+            if self.client_id == -1:
+                identification: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
+                print(f"primeira vez: id do client: {identification}")
+                self.client_id: int = int(identification)
+            
             print(f"conectou com endereço {str(adress[1])}")
-
             self.clients[client] = adress  # add cliente e seu endereço ao dict de clientes
+            self.__handle_one_client(client)
 
-            thread = threading.Thread(target=self.__handle_one_client, args=(client, adress[1]))  # cria um thread para cada cliente
-            thread.start()  # executa a thread
+            
 
     def clients_info(self) -> str:
         return str([str(address[1]) for address in self.clients.values()])

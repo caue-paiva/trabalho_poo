@@ -29,9 +29,12 @@ public class FIFAFetch {
 
             if (!this.serverHasId){
                 out_put.println(CLIENT_ID); //manda o id do cliente
+                out_put.flush();
+                Thread.sleep(2000); 
                 this.serverHasId = true;
             }
             out_put.println(request);
+            out_put.flush();
             response = in_put.readLine();
             //System.out.println("RECEBA O JAVA: " + response);
 
