@@ -3,29 +3,90 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List; // Add this import statement
+
+
+
 
 public class FIFAFetch {
     private String serverAddress;
     private int serverPort;
+
+    private final int CLIENT_ID = 31787;
+    private static final int PORT = 9090; //constantes padrão para o port do socket e o ip do localhost
+    private static final String SERVER_ADDRESS = "127.0.0.1";
+    private Boolean serverHasId;
     
+    //construtor que usa os valores padrão da classe para o port e o endereço de ip (localhost)
+    public FIFAFetch() {
+        this.serverAddress = FIFAFetch.SERVER_ADDRESS;
+        this.serverPort = FIFAFetch.PORT;
+        this.serverHasId = false;
+    }
+
+    //construtor que recebe o endereço de ip e o port do servidor
     public FIFAFetch(String serverAddress, int serverPort) {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
+        this.serverHasId = false;
     }
 
-    public String sendRequest(String request) {
+    private String sendRequest(String request) {
         String response = "";
-        try (Socket socket = new Socket(serverAddress, serverPort);
+        try (Socket socket = new Socket(this.serverAddress, this.serverPort);
              PrintWriter out_put = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
              BufferedReader in_put = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
+            if (!this.serverHasId){ //server não tem o id do cliente
+                out_put.println(CLIENT_ID); //manda o id do cliente
+                out_put.flush();
+                Thread.sleep(1500); //da sleep para essa mensagem ser processada como uma mensagem separada pelo python
+                this.serverHasId = true;
+            }
             out_put.println(request);
+            out_put.flush();
             response = in_put.readLine();
-            System.out.println("RECEBA O JAVA: " + response);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         return response;
     }
+
+    public List<FIFAPlayer> getPlayers(String request){
+        String return_str = this.sendRequest(request);
+        if (return_str.contains("inexistente")){
+            return null;
+        }
+        return FIFAPlayer.parsePlayers(return_str);
+    }
+
+    public Boolean removePlayer(String request){
+        if (!request.contains("5")){ //5 é o código da funcionalidade de remoção
+            return false;
+        }
+
+        String return_str = this.sendRequest(request);
+        if (return_str.contains("True")){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Boolean updatePlayer(String request){
+        if (!request.contains("7")){ //7 é o código da funcionalidade da atualização
+            return false;
+        }
+        System.out.println(request);
+
+        String return_str = this.sendRequest(request);
+        if (return_str.contains("True")){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+
 }

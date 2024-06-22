@@ -9,6 +9,8 @@ class SocketsHandler():
 
     server: socket.socket
     clients: dict
+    client_id:int
+    has_client_id: bool
 
     def __init__(self) -> None:
         print(f"Server IP: {self.LOCAL_IP}")
@@ -18,23 +20,20 @@ class SocketsHandler():
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # reusa a socket se ela já estiver aberta
         self.server.bind((self.LOCAL_IP, self.PORT))
         self.server.listen()
+        self.client_id = -1
 
         self.clients = {}  # inicializa o dict de clientes como vazio
 
-    def __handle_one_client(self, client: socket.socket, addr: int) -> None:
-        client_handler: ClientMessagesHandler = ClientMessagesHandler(addr)
+    def __handle_one_client(self, client: socket.socket, client_handler: ClientMessagesHandler) -> None:
         while True:
             try:
-                message: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
-                #print(f"recebeu mensagem : {message} do addr {addr}")
-                action_result: str = client_handler.run_functionality(message)
-                action_result2 = action_result.replace("\n"," | ").replace("Busca 1","").replace("|","",1)
-               # action_result2 = action_result2.replace("Busca 1","")
-                #action_result2 = action_result2.replace("|","",1)
-                action_result2 = action_result2 + '\n'
+                message: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING) #recebe mensagem do cliente
+                action_result: str = client_handler.run_functionality(message) #roda funcionalidade do trabalho de arquivos
+                action_result2 = action_result.replace("\n"," | ").replace("Busca 1","").replace("|","",1) #parsing na string
+                action_result2 = action_result2 + '\n' #coloca \n no final da str para servir como o delimitador final
 
-                encoded = action_result2.encode("utf-8")
-                client.send(encoded)
+                encoded = action_result2.encode("utf-8") 
+                client.send(encoded) #manda mensagem para o cliente
 
             except:
                 removed_addr = self.clients.pop(client)  # remove cliente
@@ -48,14 +47,19 @@ class SocketsHandler():
 
     def receive_messages(self) -> None:
         print("server está ouvindo")
+        client_handler: ClientMessagesHandler = None #handler do cliente ainda não existe
+
         while True:
             client, adress = self.server.accept()  # aceita conexão com um cliente
+        
+            if self.client_id == -1: #não tem id do cliente
+                identification: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING) #recebe id do cliente
+                self.client_id: int = int(identification) #configura id do cliente
+                client_handler = ClientMessagesHandler(self.client_id) #instancia o handler do cliente
+                
             print(f"conectou com endereço {str(adress[1])}")
-
             self.clients[client] = adress  # add cliente e seu endereço ao dict de clientes
-
-            thread = threading.Thread(target=self.__handle_one_client, args=(client, adress[1]))  # cria um thread para cada cliente
-            thread.start()  # executa a thread
+            self.__handle_one_client(client,client_handler)
 
     def clients_info(self) -> str:
         return str([str(address[1]) for address in self.clients.values()])

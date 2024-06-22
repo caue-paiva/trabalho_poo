@@ -4,7 +4,7 @@ from TrabalhoArquivosHandler import TrabalhoArquivosHandler
 
 class ClientMessagesHandler:
 
-   __ArquivosHandler: TrabalhoArquivosHandler = TrabalhoArquivosHandler() #objeto singleton interno do módulo, é  a interface com o trabalho de arquivo
+   __ArquivosHandler: TrabalhoArquivosHandler = TrabalhoArquivosHandler() #objeto estático interno da classe, é  a interface com o trabalho de arquivo
 
    client_addr:int #endereço do cliente
    client_bin_data_file:str #nome do arquivo de dados e índice do cliente
