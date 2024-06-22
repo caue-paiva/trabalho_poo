@@ -30,7 +30,7 @@ public class FIFAFetch {
             if (!this.serverHasId){ //server não tem o id do cliente
                 out_put.println(CLIENT_ID); //manda o id do cliente
                 out_put.flush();
-                Thread.sleep(2000); //da sleep para essa mensagem ser processada como uma mensagem separada pelo python
+                Thread.sleep(1500); //da sleep para essa mensagem ser processada como uma mensagem separada pelo python
                 this.serverHasId = true;
             }
             out_put.println(request);

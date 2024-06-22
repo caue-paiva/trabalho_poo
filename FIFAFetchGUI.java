@@ -6,7 +6,6 @@ import java.util.List;
 
 public class FIFAFetchGUI {
     private static JTextField idField, ageField, nameField, countryField, clubField;
-    private static JTextArea resultArea;
     private static JPanel resultPanel;
     private static FIFAFetch fifaFetch;
     private static List<FIFAPlayer> playersList;
@@ -92,17 +91,8 @@ public class FIFAFetchGUI {
         if (players == null) {
             resultPanel.add(new JLabel("Jogador(es) não encontrado(s).")); // texto falando que nenhum jogador foi encontrado
         } else {
-            playersList = players;
-            for (FIFAPlayer player : playersList) {
-                JButton playerButton = new JButton(player.name);
-                playerButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        openPlayerWindow(player);
-                    }
-                });
-                resultPanel.add(playerButton);
-            }
+            FIFAFetchGUI.playersList = players;
+            FIFAFetchGUI.showPlayersButtons();
         }
 
         resultPanel.revalidate();
@@ -121,16 +111,7 @@ public class FIFAFetchGUI {
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                StringBuilder remove_request = new StringBuilder("functionality:5");
-                remove_request.append(",id:").append(player.id);
-                Boolean result = fifaFetch.removePlayer(remove_request.toString());
-                if (result){
-                    System.out.println("remoção com sucesso");
-                }else {
-                    System.out.println("remoção falhou");
-                }
-                
-                playerFrame.dispose();
+                FIFAFetchGUI.removePlayer(player.id, playerFrame);
             }
         });
         playerFrame.add(removeButton);
@@ -146,6 +127,40 @@ public class FIFAFetchGUI {
         });
         playerFrame.add(updateButton);
         playerFrame.setVisible(true);
+    }
+
+    //atualiza a GUI com a lista de botões dos jogadores contidos na lista da variável estática playersList
+    private static void showPlayersButtons(){
+        resultPanel.removeAll(); //remove os botões antigos
+        for (FIFAPlayer player : FIFAFetchGUI.playersList) { //coloca os botões novos
+            JButton playerButton = new JButton(player.name);
+            playerButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    openPlayerWindow(player);
+                }
+            });
+            resultPanel.add(playerButton);
+        }
+        resultPanel.revalidate(); //atualiza a GUI
+        resultPanel.repaint();
+    }
+
+    private static void removePlayer(int id, JFrame playerFrame){
+        StringBuilder remove_request = new StringBuilder("functionality:5");
+        remove_request.append(",id:").append(id);
+        Boolean result = fifaFetch.removePlayer(remove_request.toString());
+        if (result) {
+            JOptionPane.showMessageDialog(playerFrame, "Remoção com sucesso");
+        } else {
+            JOptionPane.showMessageDialog(playerFrame, "Remoção falhou");
+        }
+        playerFrame.dispose();
+
+        Boolean resultado = FIFAFetchGUI.playersList.removeIf(player -> player.id == id); //remove o jogador da lista de jogadores se o id dele der match
+        System.out.println(resultado);
+        FIFAFetchGUI.showPlayersButtons(); //atualiza a GUI
+
     }
 
     public static void updatePlayerInList(int id, FIFAPlayer newInfo) {
@@ -164,4 +179,6 @@ public class FIFAFetchGUI {
         request.append(",club:").append(newInfo.club);
         
     }
+
+
 }

@@ -5,7 +5,7 @@ class TrabalhoArquivosHandler():
    LINUX_OS_IDENTIFIER = "posix" #identificadores ao rodar o comando os.name para ver se o SO é windows ou linux
    WINDOWS_OS_IDENTIFIER = "nt" 
    EXEC_NAME = "main" #nome do executável do trabalho de arquivos
-   CSV_FILE_NAME = "FIFA17.csv"
+   CSV_FILE_NAME = "FIFA17-23.csv"
    NON_EXISTENT_REGISTRY_RESPONSE = "Registro inexistente."
 
    operating_system:str 

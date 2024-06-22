@@ -47,18 +47,16 @@ class SocketsHandler():
 
     def receive_messages(self) -> None:
         print("server está ouvindo")
-        client_handler: ClientMessagesHandler = None
+        client_handler: ClientMessagesHandler = None #handler do cliente ainda não existe
 
         while True:
             client, adress = self.server.accept()  # aceita conexão com um cliente
-            
-            if self.client_id == -1:
-                identification: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
-                print(f"primeira vez: id do client: {identification}")
-                self.client_id: int = int(identification)
-                client_handler = ClientMessagesHandler(self.client_id)
+        
+            if self.client_id == -1: #não tem id do cliente
+                identification: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING) #recebe id do cliente
+                self.client_id: int = int(identification) #seta id do cliente
+                client_handler = ClientMessagesHandler(self.client_id) #instancia o handler do cliente
                 
-            
             print(f"conectou com endereço {str(adress[1])}")
             self.clients[client] = adress  # add cliente e seu endereço ao dict de clientes
             self.__handle_one_client(client,client_handler)
