@@ -6,13 +6,12 @@ OUT_DIR = out
 # lista de arquivos Java
 JAVA_FILES = Main.java FIFAFetch.java FIFAFetchGUI.java
 
-#diretório com os arquivos em c do trabalho de arquivos
-C_FILE_DIR =trabalho_arquivos
+# diretório com os arquivos em c do trabalho de arquivos
+C_FILE_DIR = trabalho_arquivos
 
 # compilação do frontend em Java e execução do backend em Python
 .PHONY: all
 all: compile
-	python3 Socketshandler.py &
 
 compile: $(OUT_DIR)
 	javac -d $(OUT_DIR) $(JAVA_FILES)
@@ -21,9 +20,10 @@ compile: $(OUT_DIR)
 $(OUT_DIR):
 	mkdir -p $(OUT_DIR)
 
-# executando frontend em Java e dependência da limpeza e compilação
+# executando frontend em Java e backend em Python
 .PHONY: run
-run: clean all
+run: all
+	python3 Socketshandler.py &
 	java -cp $(OUT_DIR) Main
 
 # limpando os arquivos .class gerados na compilação
@@ -34,4 +34,3 @@ clean:
 
 clean_bin:
 	rm -rf $(C_FILE_DIR)/*.bin
-

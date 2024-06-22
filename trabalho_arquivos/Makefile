@@ -1,5 +1,6 @@
-CC=gcc 
-CFLAGS=-Wall -g -std=c99 
+# constantes
+CC=gcc
+CFLAGS=-Wall -g -std=c99
 EXEC=main
 SRC=
 DATASET=jogador.csv
@@ -7,25 +8,42 @@ TEST_IN=test/in
 TEST_IN_DATA=test/Entrada
 CWD=$(CURDIR)
 
+# vendo qual o sistema operacional
+ifeq ($(OS),Windows_NT)
+    DETECTED_OS := Windows
+else
+    DETECTED_OS := $(shell uname)
+endif
+
+# fazendo os comandos de acordo com o sistema operacional
+ifeq ($(DETECTED_OS),Windows)
+    RM = del /q
+    RMDIR = rd /s /q
+    RUN = $(EXEC).exe
+else
+    RM = rm -f
+    RMDIR = rm -rf
+    RUN = ./$(EXEC)
+endif
+
+.PHONY: reset_data all run run_windows pipe_out clean clean_bin
 
 reset_data: clean clean_bin all run_data run
 
-
 all:
-	gcc -o ${EXEC} ${SRC}*.c
+	$(CC) $(CFLAGS) -o $(EXEC) $(SRC)*.c
 
 run:
-	./${EXEC}
+	$(RUN)
 
 run_windows:
-	$(EXEC)
-
+	$(RUN)
 
 pipe_out:
-	./${EXEC} > output.txt
+	$(RUN) > output.txt
 
 clean:
-	rm -rf *.o *.exe *.out
+	$(RM) *.o *.exe *.out
 
 clean_bin:
-	rm -rf *.bin
+	$(RMDIR) *.bin
