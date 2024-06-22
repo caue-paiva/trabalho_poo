@@ -7,6 +7,7 @@ import java.util.List;
 public class FIFAFetchGUI {
     private static JTextField idField, ageField, nameField, countryField, clubField;
     private static JTextArea resultArea;
+    private static JPanel resultPanel;
     private static FIFAFetch fifaFetch;
     private static List<FIFAPlayer> playersList;
 
@@ -24,7 +25,7 @@ public class FIFAFetchGUI {
         ageField = new JTextField();
         JLabel nameLabel = new JLabel("Name:");
         nameField = new JTextField();
-        JLabel countryLabel = new JLabel("country:");
+        JLabel countryLabel = new JLabel("Country:");
         countryField = new JTextField();
         JLabel clubLabel = new JLabel("Club:");
         clubField = new JTextField();
@@ -51,9 +52,9 @@ public class FIFAFetchGUI {
         panel.add(new JLabel());
         panel.add(searchButton);
 
-        resultArea = new JTextArea();
-        resultArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(resultArea);
+        resultPanel = new JPanel();
+        resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
+        JScrollPane scrollPane = new JScrollPane(resultPanel);
 
         frame.getContentPane().add(panel, BorderLayout.NORTH);
         frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
@@ -85,11 +86,63 @@ public class FIFAFetchGUI {
         if (!club.isEmpty())
             request.append(",club:").append(club);
 
-        List<FIFAPlayer> players = fifaFetch.sendRequest(request.toString());
-        System.out.println(players);
+        List<FIFAPlayer> players = fifaFetch.getPlayers(request.toString());
         playersList = players;
-        //System.out.println(response);
-        //resultArea.setText(response);
+
+        resultPanel.removeAll(); // Clear previous results
+
+        for (FIFAPlayer player : playersList) {
+            JButton playerButton = new JButton(player.name);
+            playerButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    openPlayerWindow(player);
+                }
+            });
+            resultPanel.add(playerButton);
+        }
+
+        resultPanel.revalidate();
+        resultPanel.repaint();
+    }
+
+    private static void openPlayerWindow(FIFAPlayer player) {
+        JFrame playerFrame = new JFrame(player.name);
+        playerFrame.setSize(300, 200);
+        playerFrame.setLayout(new GridLayout(3, 1));
+
+        JLabel nameLabel = new JLabel("Player: " + player.name + "with id: " + player.id);
+        playerFrame.add(nameLabel);
+
+        JButton removeButton = new JButton("Remove Player");
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StringBuilder remove_request = new StringBuilder("functionality:5");
+                remove_request.append(",id:").append(player.id);
+                Boolean result = fifaFetch.removePlayer(remove_request.toString());
+                if (result){
+                    System.out.println("remoção com sucesso");
+                }else {
+                    System.out.println("remoção falhou");
+                }
+                
+                playerFrame.dispose();
+            }
+        });
+        playerFrame.add(removeButton);
+
+        JButton updateButton = new JButton("Update Player");
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Implement update player functionality here
+                JOptionPane.showMessageDialog(playerFrame, "Player " + player.name + " updated.");
+                playerFrame.dispose();
+            }
+        });
+        playerFrame.add(updateButton);
+        playerFrame.setVisible(true);
     }
 
 

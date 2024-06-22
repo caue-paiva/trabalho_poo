@@ -22,15 +22,16 @@ class SocketsHandler():
         self.clients = {}  # inicializa o dict de clientes como vazio
 
     def __handle_one_client(self, client: socket.socket, addr: int) -> None:
-        client_handler: ClientMessagesHandler = ClientMessagesHandler(addr)
+        identification: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
+        client_id: int = int(identification)
+        print(f"id do client: {client_id}")
+        client_handler: ClientMessagesHandler = ClientMessagesHandler(client_id)
+
         while True:
             try:
                 message: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING)
-                #print(f"recebeu mensagem : {message} do addr {addr}")
                 action_result: str = client_handler.run_functionality(message)
                 action_result2 = action_result.replace("\n"," | ").replace("Busca 1","").replace("|","",1)
-               # action_result2 = action_result2.replace("Busca 1","")
-                #action_result2 = action_result2.replace("|","",1)
                 action_result2 = action_result2 + '\n'
 
                 encoded = action_result2.encode("utf-8")
