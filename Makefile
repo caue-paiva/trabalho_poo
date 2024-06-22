@@ -1,36 +1,61 @@
-# makefile para compilar o frontend em Java e executar o backend em Python e o frontend
+# Makefile para compilar o frontend em Java e executar o backend em Python e o frontend
 
-# diretório para os arquivos .class
+# Diretório para os arquivos .class
 OUT_DIR = out
 
-# lista de arquivos Java
+# Lista de arquivos Java
 JAVA_FILES = Main.java FIFAFetch.java FIFAFetchGUI.java
 
-# diretório com os arquivos em c do trabalho de arquivos
+# Diretório com os arquivos em C do trabalho de arquivos
 C_FILE_DIR = trabalho_arquivos
 
-# compilação do frontend em Java e execução do backend em Python
+# Detectando o sistema operacional
+ifeq ($(OS), Windows_NT)
+    RM = rmdir /S /Q
+    MKDIR = mkdir
+    PYTHON = python
+    KILL = taskkill /F /IM python.exe
+    RUN_JAVA = cmd /c "java -cp $(OUT_DIR) Main"
+else
+    RM = rm -rf
+    MKDIR = mkdir -p
+    PYTHON = python3
+    KILL = pkill -f Socketshandler.py
+    RUN_JAVA = java -cp $(OUT_DIR) Main
+endif
+
+# Compilação do frontend em Java e execução do backend em Python
 .PHONY: all
 all: compile
 
 compile: $(OUT_DIR)
+	@echo "Compiling Java files..."
 	javac -d $(OUT_DIR) $(JAVA_FILES)
 
-# criando diretório de saída para os arquivos .class
+# Criando diretório de saída para os arquivos .class
 $(OUT_DIR):
-	mkdir -p $(OUT_DIR)
+	@echo "Creating output directory..."
+	$(MKDIR) $(OUT_DIR)
 
-# executando frontend em Java e backend em Python
-.PHONY: run
-run: all
-	python3 Socketshandler.py &
-	java -cp $(OUT_DIR) Main
+# Executando apenas o servidor Python
+.PHONY: run_server
+run_server:
+	@echo "Running Python server..."
+	$(PYTHON) Socketshandler.py &
 
-# limpando os arquivos .class gerados na compilação
+# Executando apenas a interface Java
+.PHONY: run_interface
+run_interface:
+	@echo "Running Java interface..."
+	$(RUN_JAVA)
+
+# Limpando os arquivos .class gerados na compilação
 .PHONY: clean
 clean:
-	rm -rf $(OUT_DIR)
-	-@pkill -f Socketshandler.py
+	@echo "Cleaning up generated files..."
+	$(RM) $(OUT_DIR)
+	-@$(KILL)
 
 clean_bin:
-	rm -rf $(C_FILE_DIR)/*.bin
+	@echo "Cleaning up binary files..."
+	$(RM) $(C_FILE_DIR)/*.bin
