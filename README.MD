@@ -43,7 +43,9 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
 1. Download MinGW from [SourceForge](https://sourceforge.net/projects/mingw/).
 2. Run the installer as an administrator and follow the installation steps. On the installation manager screen, select the option with `gcc - g++`.
 
-    ![GCC Installation](readmeImgs/z.png)
+    <p align="center">
+      <img src="readmeImgs/z.png" alt="GCC Installation">
+    </p>
 
 3. Go to the "Installation" menu at the top and click "Apply Changes".
 
@@ -51,12 +53,16 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
 
 1. Search for "Environment Variables" in the Start menu and open it.
 
-    ![Environment Variables](readmeImgs/w.png)
+    <p align="center">
+      <img src="readmeImgs/w.png" alt="Environment Variables">
+    </p>
 
 2. Click on "Environment Variables".
 3. Select the "Path" variable and click "Edit".
 
-    ![Edit Path](readmeImgs/a.png)
+    <p align="center">
+      <img src="readmeImgs/a.png" alt="Edit Path">
+    </p>
 
 4. Add a new entry with the path where GCC was installed, typically: ``C:\MinGW\bin``
 
@@ -66,7 +72,9 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
     gcc --version
     ```
 
-    ![GCC Version](readmeImgs/c.png)
+    <p align="center">
+      <img src="readmeImgs/c.png" alt="GCC Version">
+    </p>
 
 6. Restart the computer to ensure all changes take effect.
 
@@ -123,7 +131,6 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
     ```powershell
     make run_interface
     ```
-
 
 ## Project Structure
 
