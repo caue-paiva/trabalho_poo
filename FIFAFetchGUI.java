@@ -106,12 +106,18 @@ public class FIFAFetchGUI {
 			}
 		});
 
+		// Painel para os botões de "Search" e "Show All Players"
+		JPanel buttonsPanel = new JPanel(new BorderLayout());
 
-		inputPanel.add(new JLabel());
-		inputPanel.add(searchButton);
-		inputPanel.add(new JLabel());
-		inputPanel.add(showAllButton);
-		inputPanel.add(new JLabel());
+		// Adiciona o botão de "Show All Players" ao lado esquerdo do painel
+		buttonsPanel.add(showAllButton, BorderLayout.WEST);
+
+		// Adiciona o botão de "Search" ao lado direito do painel
+		buttonsPanel.add(searchButton, BorderLayout.EAST);
+
+		// Adiciona o painel de botões ao painel de entrada
+		inputPanel.add(new JLabel()); // Adiciona uma célula vazia para espaçamento
+		inputPanel.add(buttonsPanel);
 
 		resultPanel = new JPanel();
 		resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
