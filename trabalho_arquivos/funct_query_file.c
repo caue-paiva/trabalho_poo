@@ -107,15 +107,14 @@ Registro* query_processa_linha_comando(const int num_busca){
 }
 
 //le a linha de comando do terminal e cria um registro com esses dados, usado na funcionalidade 6 (Inserção)
-Registro* query_processa_linha_comando_insercao(){
-
-   const char campo_nulo[] = "NULO"; //para identificar os campos nulos no input
-   char linha[MAX_QUERY_LINE_SIZE]; //buffer para a linha lida, e uma cópia dela
-   linha[0] = '\0'; //coloca \0 pra virar uma string vazia
+Registro* query_processa_linha_comando_insercao() {
+   const char campo_nulo[] = "NULO";
+   char linha[MAX_QUERY_LINE_SIZE];
+   linha[0] = '\0';
    char linha2[MAX_QUERY_LINE_SIZE];
    linha2[0] = '\0';
 
-   int idade  = FIX_CAMP_NULL_FLAG; //valores dos campos inicializados como nulos
+   int idade = FIX_CAMP_NULL_FLAG;
    int id = FIX_CAMP_NULL_FLAG;
    char nome[MAX_FIELD_SIZE];
    nome[0] = '\0';
@@ -124,24 +123,19 @@ Registro* query_processa_linha_comando_insercao(){
    char clube[MAX_FIELD_SIZE];
    clube[0] = '\0';
 
-   bool nomeNulo,naciNulo,clubeNulo = false; //flags para dizer se esses campos são nulos ou não
- 
-   fgets(linha, sizeof(linha), stdin); //ao usar o fgets: o que tem na posição strlen: \0 , oq tem na posição strlen-1: \n, remover esse \n
-   if (linha != NULL){
-      misc_remove_chars_lixo(linha); //remove newlines e carriage return da linha lida
-   } else { //fgets leu uma linha null
-      warn_printf("fgets leu uma linha nula, falha no processamento\n");
-      return NULL;
-   }
+   bool nomeNulo, naciNulo, clubeNulo = false;
 
-   strcpy(linha2,linha); //linha2 é um segundo buffer usado na segunda passada do STRTOK
-   
-   char* campo = strtok(linha, " "); //le o ID
-   if (campo != NULL && strcmp(campo,campo_nulo) != 0) {
-      id = atoi(campo); //transforma em int
+   fgets(linha, sizeof(linha), stdin);
+   misc_remove_chars_lixo(linha); // Assume que esta função limpa o '\n' e '\r'
+
+   strcpy(linha2, linha);
+
+   char* campo = strtok(linha, " ");
+   if (campo != NULL && strcmp(campo, campo_nulo) != 0) {
+      id = atoi(campo);
    }
-   campo = strtok(NULL, " "); //le a idade
-   if (campo != NULL && strcmp(campo,campo_nulo) != 0) {
+   campo = strtok(NULL, " ");
+   if (campo != NULL && strcmp(campo, campo_nulo) != 0) {
       idade = atoi(campo);
    }
 
