@@ -159,7 +159,7 @@ public class FIFAFetchGUI {
             JPanel playerPanel = new JPanel(new BorderLayout());
             JLabel playerNameLabel = new JLabel(player.name);
             playerNameLabel.setHorizontalAlignment(SwingConstants.LEFT); // Nome do jogador à esquerda
-            JButton editButton = new JButton("Editar");
+            JButton editButton = new JButton("✏️");
             editButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
