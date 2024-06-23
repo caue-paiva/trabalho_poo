@@ -51,11 +51,12 @@ run_interface:
 
 # executando a interface em segundo plano e rodando o servidor no terminal
 .PHONY: run
-run: compile
-	@echo "Running Java interface in background..."
-	$(RUN_JAVA) &
-	@echo "Running Python server in terminal..."
-	$(PYTHON) Socketshandler.py
+run: clean compile
+	@echo "Running Python server in background..."
+	$(PYTHON) Socketshandler.py &
+	@echo "Running Java interface in terminal..."
+	$(RUN_JAVA) 
+	
 
 # limpando os arquivos .class gerados na compilação
 .PHONY: clean
