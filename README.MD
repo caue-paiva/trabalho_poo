@@ -33,7 +33,7 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
 2. Open PowerShell as an administrator and run:
 
     ```powershell
-    1. choco install make
+    choco install make
     ```
 
 3. If Python or OpenJDK/Java is not installed, you can install them via Chocolatey as well.
@@ -63,7 +63,7 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
 5. Confirm the changes. To verify the installation, open PowerShell and run:
 
     ```bash
-    1. gcc --version
+    gcc --version
     ```
 
     ![GCC Version](readmeImgs/c.png)
@@ -74,41 +74,56 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
 
 ### Clone the Repository
 
-```bash
-git clone https://github.com/caue-paiva/trabalho_poo.git
-```
-```bash
-cd trabalho_poo
-```
+1. Use Git Clone or download a zip file
+    ```bash
+    git clone https://github.com/caue-paiva/trabalho_poo.git
+    ```
+2. Enter a folder
+    ```bash
+    cd trabalho_poo
+    ```
 
 ### Run the Program
 
 #### Linux
 
-```
-make
-```
-```bash
-make run
-```
+1. Build the project
+    ```bash
+    make
+    ```
+
+2. Run the server
+    ```bash
+    make run_server
+    ```
+
+3. Run the interface
+    ```bash
+    make run_interface
+    ```
 
 #### Windows
 
-```powershell
-make
-```
-```powershell
-make clean
-```
-```powershell
-make run_server
-```
+1. Build the project
+    ```powershell
+    make
+    ```
 
-In another PowerShell window, run:
+2. Clean previous builds (important for python socket)
+    ```powershell
+    make clean
+    ```
 
-```powershell
-make run_interface
-```
+3. Run the server
+    ```powershell
+    make run_server
+    ```
+
+4. In another PowerShell window, run the interface:
+    ```powershell
+    make run_interface
+    ```
+
 
 ## Project Structure
 
