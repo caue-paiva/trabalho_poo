@@ -11,7 +11,7 @@ João Pedro Alves Notari Godoy - NUSP: 14582076
 */
    //Esse .h expoẽ as funcionalidades e structs para a struct que vai servir de header/cabeçalho do arquivo
 
-   #define HEADER_SIZE 25 //define para o numero de bytes dos campos do header
+   #define HEADER_SIZE (sizeof(char) + (2*sizeof(long int)) + (2*sizeof(int))) //define para o numero de bytes dos campos do header
 
    typedef struct f_header Header; //typedefs na struct do Header
 

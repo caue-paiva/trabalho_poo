@@ -222,6 +222,10 @@ bool ind_cria_index(const char* arquivo_dados, const char* arquivo_index){
       return false;
    }
 
+   fseek(fp_dados,0,SEEK_END);
+   printf("final do arquivo na func do index %ld\n",ftell(fp_dados));
+   fseek(fp_dados,0,SEEK_SET);
+
    Index* index_mem = (Index*) malloc(sizeof(Index)); //alloca memoria pro index em memória
    assert(index_mem);
    IndexRegistro* arr_registros = (IndexRegistro*) malloc(sizeof(IndexRegistro) * REGISTRY_LIST_BLOCK); //aloca memória pro arr de registros
@@ -347,7 +351,7 @@ bool ind_cria_index_fp(FILE* fp_dados, const char* arquivo_index){
   
    while(1){ //loop ate houver falha na leitura de um registro ou chegar no fim do arquivo
       bool removido_flag = false;    //flag de caso o registro esteja removido, para saber se o NULL veio de um removido ou de um erro/fim do arquivo
-      
+      printf("offset atual: %ld\n",ftell(fp_dados));
       int bytes_lidos = 0;
       Registro* reg_lido = rgt_registro_ler_arquivo(fp_dados,&removido_flag,&bytes_lidos); //le um registro do arquivo
 

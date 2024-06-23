@@ -26,6 +26,7 @@ bool __rm_escreve_li_encad_novos_removidos(FILE*fp, const ListaEncad*lista_todos
    }
 
    read_result = fwrite(&lista_todos->cabeca->offset, sizeof(long int),1,fp); //escreve offset do primeiro elemento da lista no campo topo do header
+   fflush(fp);
    if (read_result != 1){
       d_printf("erro no fwrite\n");
       return false;  
@@ -48,6 +49,7 @@ bool __rm_escreve_li_encad_novos_removidos(FILE*fp, const ListaEncad*lista_todos
       char removido = REMOVED_REG;
       
       int result_fread = fwrite(&removido,sizeof(char),1,fp); 
+      fflush(fp);
       if (result_fread != 1){
             d_printf("falha no fwrite");
             return false;
@@ -61,6 +63,7 @@ bool __rm_escreve_li_encad_novos_removidos(FILE*fp, const ListaEncad*lista_todos
       }
 
       int result_fwrite = fwrite(&offset_prox,sizeof(long int),1,fp); //escreve o prox removido no registro
+      fflush(fp);
       if (result_fwrite != 1){
          d_printf("falha no fwrite");
          return false;
@@ -83,6 +86,7 @@ bool __rm_remocao_logica_index(FILE*fp,Header* header, ListaEncad* ja_removidos,
    b_errno_check(resultado_fseek);
    char removido = REMOVED_REG;
    b_file_io_check(fwrite(&removido, sizeof(char),1,fp),1); //escreve que ele é removido
+   fflush(fp);
 
    int tam_registro;
    b_file_io_check(fread(&tam_registro,sizeof(int),1,fp),1); //le o tamanho do registro
@@ -142,13 +146,14 @@ bool rm_remove_registros(const char* nome_arquivo_dados, const char*  nome_arqui
    if (!index){ //falha em abrir o index
       return false; //não precisa printar msg de erro que a função do index já faz isso
    }
-
+   fflush(NULL);
    Header* header = rgt_header_criar(); //struct de header do arquivo de dados
    FILE* fp = rgt_header_abre_modifica(nome_arquivo_dados,header); //abre o arquivo de dados para modificação, escreve ele com inconsistente
    if (!fp){ //falha em abrir o arquivo de dados
       ind_index_mem_destroi(&index); //libera memória do index
       return false;
    }
+   printf("header em memoria o num de reg: %d\n",header->nroRegArq);
 
    bool novo_removido = false;   //flag de que pelo menos um registro foi removido
    ListaEncad* ja_removidos = NULL; //essa lista vai ser criada como NULL e será inicializada de acordo com o tipo de remoção (sequencial x index)

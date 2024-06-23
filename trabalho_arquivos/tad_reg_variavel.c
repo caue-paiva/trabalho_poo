@@ -194,6 +194,7 @@ void rgt_registro_destruir(Registro** registro){
 Registro* rgt_registro_ler_arquivo(FILE* fp, bool* removido_flag, int* bytes_lidos){
    assert_3ptrs(fp,removido_flag,bytes_lidos);
    *bytes_lidos = 0; //seta a variavel como zero
+   if (feof(fp)) return NULL;
 
    char removido; //variaveis buffers para leitura
    int tamanhoRegistro, id, idade, tamNomeJog,tamNacionalidade, tamNomeClube;
@@ -208,15 +209,17 @@ Registro* rgt_registro_ler_arquivo(FILE* fp, bool* removido_flag, int* bytes_lid
    int campos_lidos = 0; //variavel para ver quantos campos sao lidos, usados para ver erros nas funcoes de I/O de arquivos
 
    campos_lidos = fread(&removido,sizeof(char),1,fp); //le o status do arquivo, se foi removido ou não
+   if (feof(fp)) return NULL;
    if (campos_lidos == 0){  //nenhum campo foi lido, erro
       return NULL;
    } else {
-      (*bytes_lidos) +=1;
+      (*bytes_lidos) += sizeof(char);
    }
         
    if (removido == REMOVED_REG){ //caso o registro esteja removido
          
          int items_lidos = fread(&tamanhoRegistro,sizeof(int),1,fp); //le o tamanho do registro
+         if (feof(fp)) return NULL;
          if (items_lidos== 0){ //fread leu 0 items, erro, retorna NULL
             return NULL;
          } else {
@@ -224,6 +227,7 @@ Registro* rgt_registro_ler_arquivo(FILE* fp, bool* removido_flag, int* bytes_lid
          }
 
          items_lidos = fread(&Prox,sizeof(long int),1,fp); //le o prox do registro da lista encad de removidos
+         if (feof(fp)) return NULL;
          if (items_lidos== 0){ //fread leu 0 items, erro, retorna NULL
             return NULL;
          } else {
@@ -232,15 +236,18 @@ Registro* rgt_registro_ler_arquivo(FILE* fp, bool* removido_flag, int* bytes_lid
 
          int id;
          items_lidos = fread(&id,sizeof(int),1,fp); //le o id do registro
+         if (feof(fp)) return NULL;
          if (items_lidos== 0){ //fread leu 0 items, erro, retorna NULL
             return NULL;
          } else {
             (*bytes_lidos) += sizeof(int);
          } 
          
-         int tamanho_ler = tamanhoRegistro - sizeof(char) - (2*sizeof(int)) - sizeof(long int); //vamos ler o tamanho do registro menos o campo de status e tamanho já lidos anteriormente
+         int tamanho_ler = tamanhoRegistro - (int) sizeof(char) -  (int) (2*sizeof(int)) -  (int) sizeof(long int); //vamos ler o tamanho do registro menos o campo de status e tamanho já lidos anteriormente
+         printf("tamanho ler: %d , tam do reg: %d \n",tamanho_ler,tamanhoRegistro);
          char buffer_pular[tamanho_ler+1]; //buffer para leitura do fread
          items_lidos = fread(buffer_pular,tamanho_ler,1,fp); //pula pro final do registro
+         if (feof(fp)) return NULL;
          if (items_lidos == 0){ //fread leu 0 items, erro
             return NULL;
          } else {
@@ -257,35 +264,46 @@ Registro* rgt_registro_ler_arquivo(FILE* fp, bool* removido_flag, int* bytes_lid
    }
 
       campos_lidos  = fread(&tamanhoRegistro,sizeof(int),1,fp);
+      if (feof(fp)) return NULL;
       campos_lidos += fread(&Prox,sizeof(long int),1,fp);
+      if (feof(fp)) return NULL;
       campos_lidos += fread(&id,sizeof(int),1,fp);
+      if (feof(fp)) return NULL;
       campos_lidos += fread(&idade,sizeof(int),1,fp);
+      if (feof(fp)) return NULL;
+      
       if (campos_lidos != 4){ //leu menos campos do que deveria, erro
          return NULL;
       } else {
-         (*bytes_lidos) += (sizeof(int) *3) + sizeof(long int);
+         (*bytes_lidos) +=  (int) (sizeof(int) *3) +  (int) sizeof(long int);
       }
 
       //campos de tamanho variavel
       fread(&tamNomeJog,sizeof(int),1,fp);
+      if (feof(fp)) return NULL;
       fread(nome_buffer,sizeof(char),tamNomeJog,fp); //le o nome e guarda no buffer
-      (*bytes_lidos) += (sizeof(int) + tamNomeJog);
+       if (feof(fp)) return NULL;
+      (*bytes_lidos) += ( (int) sizeof(int) + tamNomeJog);
       if (tamNomeJog == VAR_CAMP_NULL_FLAG)
          strcpy(nome_buffer,sem_dado); //caso nao tenha nenhum dado no campo, copia a msg de SEM DADO para o buffer
       else
          nome_buffer[tamNomeJog] = '\0'; //\0 no final da string do BUFFER, apenas usado para imprimir o dado
   
       fread(&tamNacionalidade,sizeof(int),1,fp);
+      if (feof(fp)) return NULL;
       fread(nacionali_buffer,sizeof(char),tamNacionalidade,fp); //ler o nome  guarda no buffer
-      (*bytes_lidos) += (sizeof(int) + tamNacionalidade);
+      if (feof(fp)) return NULL;
+      (*bytes_lidos) += ( (int) sizeof(int) + tamNacionalidade);
       if (tamNacionalidade == VAR_CAMP_NULL_FLAG)
          strcpy(nacionali_buffer,sem_dado);
       else
          nacionali_buffer[tamNacionalidade] = '\0';
 
       fread(&tamNomeClube,sizeof(int),1,fp);
+      if (feof(fp)) return NULL;
       fread(clube_buffer,sizeof(char),tamNomeClube,fp); //le o nome  e guarda no buffer
-      (*bytes_lidos) += (sizeof(int) + tamNomeClube);
+      if (feof(fp)) return NULL;
+      (*bytes_lidos) += ( (int) sizeof(int) + tamNomeClube);
 
       if (tamNomeClube == VAR_CAMP_NULL_FLAG)
          strcpy(clube_buffer,sem_dado);
@@ -298,6 +316,7 @@ Registro* rgt_registro_ler_arquivo(FILE* fp, bool* removido_flag, int* bytes_lid
       }
       char buffer_pular[tam_pular+1];
       file_io_check(fread(buffer_pular,sizeof(char),tam_pular,fp),tam_pular);
+      if (feof(fp)) return NULL;
       (*bytes_lidos) += tam_pular; //vamos contar tbm os bytes lidos um pular para depois do lixo
 
       Registro* reg_lido = rgt_registro_criar(id,idade,nome_buffer,nacionali_buffer,clube_buffer); //cria registro a partir dos dados lidos
