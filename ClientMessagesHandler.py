@@ -27,18 +27,15 @@ class ClientMessagesHandler:
       return return_dict 
 
    def run_functionality(self,client_message:str)->str:
- 
       funct_params:dict = self.__split_messages(client_message) #parâmetros que o cliente mandou na mensagem, tem que ter a funcionalidade a ser
       #rodada e se necessário os parâmetros dos jogadores
       functionality:str = funct_params.pop("functionality","") #pega a funcionalidade e remove essa key do dict
-      
       if not functionality:
          raise IOError("messagem do socket deve conter uma funcionalidade do trabalho de arquivos")
-
+      
+      functionality = functionality.strip()
       match (functionality):
-         case "1": #criar arquivo bin
-            pass
-         
+
          case "2": #printa todos jogadores
             result = self.__ArquivosHandler.show_all_players(self.client_bin_data_file)
             print(f"Resultado da funcionalidade 2: {result}") # Adicione este log para depurar o resultado

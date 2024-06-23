@@ -30,15 +30,16 @@ class SocketsHandler():
                 message: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING) #recebe mensagem do cliente
                 print(f"Mensagem recebida do cliente: {message}") # Adicione este log para depurar a mensagem recebida
                 action_result: str = client_handler.run_functionality(message) #roda funcionalidade do trabalho de arquivos
+                print(action_result)
                 action_result2 = action_result.replace("\n", " | ").replace("Busca 1", "").replace("|", "", 1) #parsing na string
                 action_result2 = action_result2 + '\n' #coloca \n no final da str para servir como o delimitador final
 
                 encoded = action_result2.encode("utf-8") 
                 client.send(encoded) #manda mensagem para o cliente
-                print(f"Mensagem enviada ao cliente: {action_result2}") # Adicione este log para depurar a mensagem enviada
+                #print(f"Mensagem enviada ao cliente: {action_result2}") # Adicione este log para depurar a mensagem enviada
 
             except Exception as e:
-                print(f"Erro no cliente: {e}") # Adicione este log para capturar exceções
+                print(f"Erro no cliente: {e}") # captura exceções
                 removed_addr = self.clients.pop(client)  # remove cliente
                 client.close()  # fecha conexão com cliente
 
