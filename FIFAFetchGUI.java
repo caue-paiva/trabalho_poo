@@ -59,7 +59,7 @@ public class FIFAFetchGUI {
 
 		// Painel para os campos de entrada
 		JPanel inputPanel = new JPanel();
-		inputPanel.setLayout(new GridLayout(8, 2, 10, 10));
+		inputPanel.setLayout(new GridLayout(6, 2, 10, 10)); // 8 linhas, 2 colunas, espaçamento de 10px
 		inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // padding ao redor do painel
 
 		JLabel idLabel = new JLabel("ID:");
