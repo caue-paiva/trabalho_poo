@@ -36,7 +36,6 @@ class SocketsHandler():
 
                 encoded = action_result2.encode("utf-8") 
                 client.send(encoded) #manda mensagem para o cliente
-                #print(f"Mensagem enviada ao cliente: {action_result2}") # Adicione este log para depurar a mensagem enviada
 
             except Exception as e:
                 print(f"Erro no cliente: {e}") # captura exceções

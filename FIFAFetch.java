@@ -8,8 +8,8 @@ import java.util.List;
 public class FIFAFetch {
     private String serverAddress;
     private int serverPort;
+    private  int client_id;
 
-    private final int CLIENT_ID = 31787;
     private static final int PORT = 9090; // constantes padrão para o port do socket e o ip do localhost
     private static final String SERVER_ADDRESS = "127.0.0.1";
     private Boolean serverHasId;
@@ -20,6 +20,7 @@ public class FIFAFetch {
         this.serverAddress = FIFAFetch.SERVER_ADDRESS;
         this.serverPort = FIFAFetch.PORT;
         this.serverHasId = false;
+        this.client_id = (int) (Math.random() * 1000); // gera um id aleatório para o cliente
     }
 
     // construtor que recebe o endereço de ip e o port do servidor
@@ -27,6 +28,7 @@ public class FIFAFetch {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
         this.serverHasId = false;
+        this.client_id = (int) (Math.random() * 1000); // gera um id aleatório para o cliente
     }
 
     private String sendRequest(String request) {
@@ -36,7 +38,7 @@ public class FIFAFetch {
                 BufferedReader in_put = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
             if (!this.serverHasId) { // server não tem o id do cliente
-                out_put.println(CLIENT_ID); // manda o id do cliente
+                out_put.println(this.client_id); // manda o id do cliente
                 out_put.flush();
                 Thread.sleep(1500); // da sleep para essa mensagem ser processada como uma mensagem separada pelo
                                     // python
