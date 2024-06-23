@@ -67,7 +67,7 @@ class TrabalhoArquivosHandler():
       print(f"Executando comando: {stdin}") # Adicione este log para ver o comando que está sendo executado
       result = subprocess.run(run_exec_command,input=stdin,capture_output=True,text=True,shell=True,cwd=self.c_code_folder_path)
       if result.returncode != 0:
-         raise RuntimeError(f"falha ao executar comando com input {stdin}")
+         raise RuntimeError(f"Falha ao executar comando com input {stdin}. Código de retorno: {result.stdout}. Erro: {result.stderr}")
       print(f"Resultado do comando: {result.stdout}") # Adicione este log para ver a saída do comando
       return result.stdout
       
