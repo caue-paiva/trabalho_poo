@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.List;
 
 public class FIFAFetchGUI {
@@ -51,28 +50,37 @@ public class FIFAFetchGUI {
         inputPanel.add(clubLabel);
         inputPanel.add(clubField);
 
-        JButton searchButton = new JButton("Search");
-        searchButton.addActionListener(new ActionListener() {
+        // Botão de busca com ícone
+        JButton searchButton = new JButton(" Search");
+        ImageIcon searchIcon = new ImageIcon("imgs/search.png");
+        searchButton.setIcon(searchIcon);
+        configureButton(searchButton, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 searchPlayer();
             }
         });
 
-        JButton showAllButton = new JButton("Show All Players");
-        showAllButton.addActionListener(new ActionListener() {
+        // Botão de mostrar todos os jogadores com ícone
+        JButton showAllButton = new JButton(" Show All Players");
+        ImageIcon playersIcon = new ImageIcon("imgs/players.png");
+        showAllButton.setIcon(playersIcon);
+        configureButton(showAllButton, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showAllPlayers();
             }
         });
 
-        JButton showEditButton = new JButton("Edit Players");
-        showEditButton.addActionListener(new ActionListener() {
+        // Botão de editar jogadores com ícone
+        JButton showEditButton = new JButton(" Edit Players");
+        ImageIcon editIcon = new ImageIcon("imgs/edit.png");
+        showEditButton.setIcon(editIcon);
+        configureButton(showEditButton, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showEditButtons = !showEditButtons; // Alterna o estado do botão de edição
-                showEditButton.setText(showEditButtons ? "Abort Edition" : "Edit Players"); // Atualiza o texto do botão de edição
+                showEditButton.setText(showEditButtons ? " Abort Edition" : " Edit Players"); // Atualiza o texto do botão de edição
                 showPlayersButtons(); // Atualiza a exibição dos botões de jogador
             }
         });
@@ -182,12 +190,7 @@ public class FIFAFetchGUI {
         JButton removeButton = new JButton("  Remove Player");
         ImageIcon trashIcon = new ImageIcon("imgs/trash.png");
         removeButton.setIcon(trashIcon);
-        removeButton.setHorizontalTextPosition(SwingConstants.RIGHT);
-        removeButton.setContentAreaFilled(false);
-        removeButton.setBorderPainted(false);
-        removeButton.setFocusPainted(false);
-        removeButton.setOpaque(false);
-        removeButton.addActionListener(new ActionListener() {
+        configureButton(removeButton, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 FIFAFetchGUI.removePlayer(player.id, playerFrame);
@@ -202,12 +205,7 @@ public class FIFAFetchGUI {
         JButton updateButton = new JButton("  Update Player");
         ImageIcon updateIcon = new ImageIcon("imgs/update.png");
         updateButton.setIcon(updateIcon);
-        updateButton.setHorizontalTextPosition(SwingConstants.RIGHT);
-        updateButton.setContentAreaFilled(false);
-        updateButton.setBorderPainted(false);
-        updateButton.setFocusPainted(false);
-        updateButton.setOpaque(false);
-        updateButton.addActionListener(new ActionListener() {
+        configureButton(updateButton, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 FIFAFetchGUI.updatePlayer(player, playerFrame);
@@ -243,7 +241,7 @@ public class FIFAFetchGUI {
             editButton.setBorderPainted(false);
             editButton.setFocusPainted(false);
 
-            editButton.addActionListener(new ActionListener() {
+            configureButton(editButton, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     openPlayerWindow(player);
@@ -316,7 +314,7 @@ public class FIFAFetchGUI {
         panel.add(clubField);
 
         JButton submitButton = new JButton("Update");
-        submitButton.addActionListener(new ActionListener() {
+        configureButton(submitButton, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = nameField.getText();
@@ -366,6 +364,25 @@ public class FIFAFetchGUI {
             }
         }
         FIFAFetchGUI.showPlayersButtons();
+    }
+
+    private static void configureButton(JButton button, ActionListener actionListener) {
+        button.addActionListener(actionListener);
+        button.setHorizontalTextPosition(SwingConstants.RIGHT);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setOpaque(false);
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setCursor(Cursor.getDefaultCursor());
+            }
+        });
     }
 
     public static void main(String[] args) {
