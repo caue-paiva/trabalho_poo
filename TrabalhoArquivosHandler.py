@@ -51,12 +51,12 @@ class TrabalhoArquivosHandler():
    def __get_os_specific_comands(self)->None:
       if self.operating_system == "linux":
          self.run_exec_cmd = f"./{self.EXEC_NAME}"
-         self.delete_files_cmd = f"rm -f "
-         self.delete_all_bin_files_cmd = f"rm -f *bin"
+         self.delete_files_cmd = f"rm -f " #comando para deletar um arquivo especifico
+         self.delete_all_bin_files_cmd = f"rm -f *.bin" #comando para limpar todos os binários
       else: #so é windows
          self.run_exec_cmd = f"{self.EXEC_NAME}.exe"
          self.delete_files_cmd = f"del /f "
-         self.delete_all_bin_files_cmd = f"Remove-Item -Force -Recurse *.bin"
+         self.delete_all_bin_files_cmd = f'powershell -Command "Remove-Item -Force -Recurse *.bin"'
 
    def __run_command(self,stdin:str)->str:
       """
@@ -195,17 +195,16 @@ class TrabalhoArquivosHandler():
 
    def delete_binary_files(self,binary_file_name:str = "",index_file_name:str="")->bool:
       """
-      Deleta o arquivo binário de dados e de índice passados como parâmetro
-      
+      Deleta o arquivo binário de dados e de índice passados como parâmetro, caso nenhum parâmetro seja passado,
+      deleta todos os arquivos binários do diretório
       """
-      if ".bin" not in binary_file_name or ".bin" not in index_file_name:
-         print("ERRO: A função de remoção de arquivos binários recebeu nomes de arquivos sem o .bin como parâmetro")
-         return False
-      
-      if not binary_file_name and not index_file_name:
-         delete_files_cmd = self.delete_all_bin_files_cmd
+      if not binary_file_name and not index_file_name: #vai deletar todos os arquivos binários no folder
+         delete_files_cmd:str = self.delete_all_bin_files_cmd
       else:
-         delete_files_cmd: str =f"{self.delete_files_cmd} {binary_file_name} {index_file_name}"
-      self.__run_command(delete_files_cmd)
-
+         delete_files_cmd: str =f"{self.delete_files_cmd} {binary_file_name} {index_file_name}" #deleta apenas alguns arquivos binarios
+      
+      #roda comando para deletar arquivos binários
+      result = subprocess.run(delete_files_cmd,text=True,shell=True,cwd=self.c_code_folder_path)
+      if result.returncode != 0:
+         return False
       return True

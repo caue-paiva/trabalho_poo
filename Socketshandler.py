@@ -33,15 +33,12 @@ class SocketsHandler():
                 print(action_result)
                 action_result2 = action_result.replace("\n", " | ").replace("Busca 1", "").replace("|", "", 1) #parsing na string
                 action_result2 = action_result2 + '\n' #coloca \n no final da str para servir como o delimitador final
-
                 encoded = action_result2.encode("utf-8") 
                 client.send(encoded) #manda mensagem para o cliente
 
             except Exception as e:
-                print(f"Erro no cliente: {e}") # captura exceções
                 removed_addr = self.clients.pop(client)  # remove cliente
                 client.close()  # fecha conexão com cliente
-
                 print(f"endereço removido {str(removed_addr[1])}")
                 break  # sai do loop
 
@@ -55,6 +52,7 @@ class SocketsHandler():
             if self.client_id == -1: #não tem id do cliente
                 identification: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING) #recebe id do cliente
                 self.client_id: int = int(identification) #configura id do cliente
+                print("recebeu id do cliente")
                 client_handler = ClientMessagesHandler(self.client_id,True) #instancia o handler do cliente
                 
             print(f"conectou com endereço {str(adress[1])}")

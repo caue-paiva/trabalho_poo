@@ -11,13 +11,17 @@ C_FILE_DIR = trabalho_arquivos
 
 # detectando o sistema operacional
 ifeq ($(OS), Windows_NT)
-    RM = cmd /c rmdir /S /Q 
-    MKDIR = mkdir
+    RM = Remove-Item -Force -Recurse 
+	 RM_DIR = powershell -Command "Remove-Item -Force -Recurse '$(OUT_DIR)' -ErrorAction SilentlyContinue" 
+    RM_BIN = powershell -Command "Remove-Item -Force -Recurse '$(C_FILE_DIR)/*.bin' -ErrorAction SilentlyContinue" 
+	 MKDIR = mkdir
     PYTHON = python
-    KILL = taskkill /F /IM python.exe /T
+    KILL = cmd /c "taskkill /F /IM python.exe /T"
     RUN_JAVA = cmd /c "java -cp $(OUT_DIR) Main"
 else
     RM = rm -rf
+	 RM_DIR = rm -rf $(OUT_DIR)
+	 RM_BIN = rm -rf $(C_FILE_DIR)/*.bin
     MKDIR = mkdir -p
     PYTHON = python3
     KILL = pkill -f Socketshandler.py
@@ -62,9 +66,9 @@ run: clean compile
 .PHONY: clean
 clean:
 	@echo "Cleaning up generated files..."
-	$(RM) $(OUT_DIR)
+	$(RM_DIR)
 	-@$(KILL)
 
 clean_bin:
 	@echo "Cleaning up binary files..."
-	$(RM) $(C_FILE_DIR)/*.bin
+	$(RM_BIN)
