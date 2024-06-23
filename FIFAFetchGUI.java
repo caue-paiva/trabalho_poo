@@ -17,7 +17,7 @@ public class FIFAFetchGUI {
         frame.setSize(600, 400);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(8, 2, 10, 10)); // criando uma grid 
+        panel.setLayout(new GridLayout(8, 2, 10, 10)); // criando uma grid
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // padding ao redor do painel
 
         JLabel idLabel = new JLabel("ID:");
@@ -63,7 +63,8 @@ public class FIFAFetchGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showEditButtons = !showEditButtons; // alterna o estado do botão de edição
-                showEditButton.setText(showEditButtons ? "Abort Edition" : "Edit Players"); // atualiza o texto do botão de edição
+                showEditButton.setText(showEditButtons ? "Abort Edition" : "Edit Players"); // atualiza o texto do botão
+                                                                                            // de edição
                 showPlayersButtons(); // atualiza a exibição dos botões de jogador
             }
         });
@@ -145,7 +146,15 @@ public class FIFAFetchGUI {
         JLabel nameLabel = new JLabel("Jogador: " + player.name + " com id: " + player.id);
         playerFrame.add(nameLabel);
 
-        JButton removeButton = new JButton("Remover Jogador");
+        // cria o botão de remover com ícone
+        JButton removeButton = new JButton("  Remove Player");
+        ImageIcon trashIcon = new ImageIcon("imgs/trash.png");
+        removeButton.setIcon(trashIcon);
+        removeButton.setHorizontalTextPosition(SwingConstants.RIGHT);
+        removeButton.setContentAreaFilled(false);
+        removeButton.setBorderPainted(false);
+        removeButton.setFocusPainted(false);
+        removeButton.setOpaque(false);
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -154,7 +163,15 @@ public class FIFAFetchGUI {
         });
         playerFrame.add(removeButton);
 
-        JButton updateButton = new JButton("Update Player");
+        // cria o botão de update com ícone
+        JButton updateButton = new JButton("  Update Player");
+        ImageIcon updateIcon = new ImageIcon("imgs/update.png");
+        updateButton.setIcon(updateIcon);
+        updateButton.setHorizontalTextPosition(SwingConstants.RIGHT);
+        updateButton.setContentAreaFilled(false);
+        updateButton.setBorderPainted(false);
+        updateButton.setFocusPainted(false);
+        updateButton.setOpaque(false);
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -163,6 +180,7 @@ public class FIFAFetchGUI {
             }
         });
         playerFrame.add(updateButton);
+
         playerFrame.setVisible(true);
     }
 
@@ -197,7 +215,8 @@ public class FIFAFetchGUI {
 
             // adiciona espaço extra quando os botões de edição estão ocultos
             if (!showEditButtons) {
-                playerPanel.setBorder(BorderFactory.createEmptyBorder(9, 0, 9, 0)); // espaçamento extra quando o botão de edição está oculto
+                playerPanel.setBorder(BorderFactory.createEmptyBorder(9, 0, 9, 0)); // espaçamento extra quando o botão
+                                                                                    // de edição está oculto
             }
 
             resultPanel.add(playerPanel);
@@ -228,7 +247,7 @@ public class FIFAFetchGUI {
         updateFrame.setSize(400, 300);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 2, 10, 10)); 
+        panel.setLayout(new GridLayout(5, 2, 10, 10));
 
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField();
