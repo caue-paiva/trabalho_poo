@@ -9,7 +9,7 @@ public class FIFAFetchGUI {
     private static JPanel resultPanel;
     private static FIFAFetch fifaFetch;
     private static List<FIFAPlayer> playersList;
-    private static boolean showEditButtons = false; //  ratrea o estado do botão "Show Edit"
+    private static boolean showEditButtons = false; // rastrea o estado do botão de edição
 
     public static void createAndShowGUI() {
         JFrame frame = new JFrame("FIFA Player Fetch");
@@ -17,7 +17,7 @@ public class FIFAFetchGUI {
         frame.setSize(600, 400);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(8, 2, 10, 10)); // ajuste linhas com espaço entre componentes
+        panel.setLayout(new GridLayout(8, 2, 10, 10)); 
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // padding ao redor do painel
 
         JLabel idLabel = new JLabel("ID:");
@@ -62,9 +62,8 @@ public class FIFAFetchGUI {
         showEditButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                showEditButtons = !showEditButtons; // altera o estado do botão de edição
-                showPlayersButtons(); // da update a visibilidade dos botões de edição
-            }
+                showEditButtons = !showEditButtons; //alterna o estado do botão de edição
+                showPlayersButtons(); // atualiza a exibição dos botões
         });
 
         panel.add(new JLabel());
@@ -77,7 +76,7 @@ public class FIFAFetchGUI {
         resultPanel = new JPanel();
         resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
         JScrollPane scrollPane = new JScrollPane(resultPanel);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // padding ao redor do scroll pane
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // padding ao redor do scrollPane
 
         frame.getContentPane().add(panel, BorderLayout.NORTH);
         frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
@@ -170,7 +169,7 @@ public class FIFAFetchGUI {
         for (FIFAPlayer player : playersList) {
             JPanel playerPanel = new JPanel(new BorderLayout());
             JLabel playerNameLabel = new JLabel(player.name);
-            playerNameLabel.setHorizontalAlignment(SwingConstants.LEFT); // nomes dos do jogadores a esquerda
+            playerNameLabel.setHorizontalAlignment(SwingConstants.LEFT); // nome do jogador sempre a esquerda
 
             // Carregar a imagem do ícone
             ImageIcon editIcon = new ImageIcon("imgs/pencil.png");
@@ -189,10 +188,16 @@ public class FIFAFetchGUI {
                 }
             });
 
-            editButton.setVisible(showEditButtons); // faz com que os botões de edição fiquem viseveis ou não 
+            editButton.setVisible(showEditButtons); // define a visibilidade dos botões pelo showEditButtons
 
             playerPanel.add(playerNameLabel, BorderLayout.WEST);
-            playerPanel.add(editButton, BorderLayout.EAST); // botão de editar a esquerda
+            playerPanel.add(editButton, BorderLayout.EAST); // botão de editar sempre a direita
+
+            // adicionando espaço extra quando os botões de edição estão ocultos
+            if (!showEditButtons) {
+                playerPanel.setBorder(BorderFactory.createEmptyBorder(9, 0, 9, 0)); // expaãmento extra pra ficar mais estético
+            }
+
             resultPanel.add(playerPanel);
         }
         resultPanel.revalidate();
@@ -221,7 +226,7 @@ public class FIFAFetchGUI {
         updateFrame.setSize(400, 300);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 2, 10, 10)); // ajustando com espaço entre  oscomponentes
+        panel.setLayout(new GridLayout(5, 2, 10, 10)); // 5 linhas, 2 colunas, 10 de espaçamento horizontal e vertical
 
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField();
