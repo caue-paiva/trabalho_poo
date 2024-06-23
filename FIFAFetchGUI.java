@@ -140,7 +140,7 @@ public class FIFAFetchGUI {
 
     private static void openPlayerWindow(FIFAPlayer player) {
         JFrame playerFrame = new JFrame(player.name);
-        playerFrame.setSize(300, 200);
+        playerFrame.setSize(350, 200);
         playerFrame.setLayout(new BorderLayout());
 
         // Cria um painel principal com BoxLayout vertical
