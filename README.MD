@@ -12,6 +12,33 @@ The FIFA Database Project is a desktop application developed in Java Swing for a
 - **Delete**: Removes player records from the database.
 - **Socket Communication**: The Java GUI connects to a Python server, which communicates with a C program to perform operations on data files.
 
+## How the Project Works
+
+### Overview
+The project integrates a Java Swing interface, a Python socket server, and a C backend. Here is how these components interact:
+
+### Graphical User Interface (GUI)
+- **Main.java**: Initializes the graphical user interface.
+- **FIFAFetch.java**: Manages socket connections for data transmission.
+- **FIFAFetchGUI.java**: Manages all user interactions for data manipulation including loading, searching, viewing, editing, and deleting player data.
+- **FIFAPlayer.java**: Structures player data for internal operations.
+
+### Server and Communication
+- **Socketshandler.py**: Operates the socket server for GUI communications.
+- **ClientMessagesHandler.py**: Processes GUI commands and coordinates with the C backend.
+- **TrabalhoArquivosHandler.py**: Directly manages file operations based on server requests.
+
+### Data Manipulation
+- The C backend directly manipulates player data files, ensuring efficient and secure operations.
+
+### Workflow
+1. User actions on the GUI trigger data operation commands.
+2. Commands are sent through sockets to the Python server.
+3. The server processes these requests, performs file operations, and sends back the results.
+4. GUI updates to reflect changes, providing real-time interaction.
+
+This modular architecture enhances system robustness and maintainability.
+
 ## Installation
 
 ### Requirements
@@ -140,7 +167,7 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
 - Search for players by ID, age, name, nationality, and club.
 - Display search results and allow selection for detailed view and editing.
 - Delete player records.
-- 
+
 ### Server and Communication
 
 - The GUI connects to a Python server using sockets.
