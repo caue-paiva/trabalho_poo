@@ -153,19 +153,30 @@ public class FIFAFetchGUI {
         playerFrame.setVisible(true);
     }
 
-    private static void showPlayersButtons(){
+    private static void showPlayersButtons() {
         resultPanel.removeAll();
-        for (FIFAPlayer player : FIFAFetchGUI.playersList) {
+        for (FIFAPlayer player : playersList) {
             JPanel playerPanel = new JPanel(new BorderLayout());
             JLabel playerNameLabel = new JLabel(player.name);
             playerNameLabel.setHorizontalAlignment(SwingConstants.LEFT); // Nome do jogador à esquerda
-            JButton editButton = new JButton("✏️");
+
+            // Carregar a imagem do ícone
+            ImageIcon editIcon = new ImageIcon("imgs/pencil.png");
+            JButton editButton = new JButton(editIcon);
+
+            // Configurações para tornar o botão transparente
+            editButton.setOpaque(false);
+            editButton.setContentAreaFilled(false);
+            editButton.setBorderPainted(false);
+            editButton.setFocusPainted(false);
+
             editButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     openPlayerWindow(player);
                 }
             });
+
             playerPanel.add(playerNameLabel, BorderLayout.WEST);
             playerPanel.add(editButton, BorderLayout.EAST); // Botão "Editar" à direita
             resultPanel.add(playerPanel);
@@ -174,7 +185,7 @@ public class FIFAFetchGUI {
         resultPanel.repaint();
     }
 
-    private static void removePlayer(int id, JFrame playerFrame){
+    private static void removePlayer(int id, JFrame playerFrame) {
         StringBuilder remove_request = new StringBuilder("functionality:5");
         remove_request.append(",id:").append(id);
         Boolean result = fifaFetch.removePlayer(remove_request.toString());
@@ -190,7 +201,7 @@ public class FIFAFetchGUI {
         FIFAFetchGUI.showPlayersButtons();
     }
 
-    private static void updatePlayer(FIFAPlayer player, JFrame playerFrame){
+    private static void updatePlayer(FIFAPlayer player, JFrame playerFrame) {
         JFrame updateFrame = new JFrame("Atualizar jogador");
         updateFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         updateFrame.setSize(400, 300);
