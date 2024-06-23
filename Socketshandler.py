@@ -43,9 +43,6 @@ class SocketsHandler():
                 client.close()  # fecha conexão com cliente
 
                 print(f"endereço removido {str(removed_addr[1])}")
-                remove_result: bool = client_handler.remove_client_data()  # remove os arquivos binários relacionados ao cliente
-                if not remove_result:  # falha na remoção desses arquivos
-                    print("falha ao remover arquivos do cliente que desligou a conexão")
                 break  # sai do loop
 
     def receive_messages(self) -> None:
@@ -58,7 +55,7 @@ class SocketsHandler():
             if self.client_id == -1: #não tem id do cliente
                 identification: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING) #recebe id do cliente
                 self.client_id: int = int(identification) #configura id do cliente
-                client_handler = ClientMessagesHandler(self.client_id) #instancia o handler do cliente
+                client_handler = ClientMessagesHandler(self.client_id,True) #instancia o handler do cliente
                 
             print(f"conectou com endereço {str(adress[1])}")
             self.clients[client] = adress  # add cliente e seu endereço ao dict de clientes

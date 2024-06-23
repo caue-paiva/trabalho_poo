@@ -92,6 +92,7 @@ public class FIFAFetch {
         System.out.println(request);
 
         String return_str = this.sendRequest(request);
+        System.out.println(return_str);
         if (return_str == null) {
             return false;
         }

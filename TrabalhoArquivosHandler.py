@@ -11,6 +11,7 @@ class TrabalhoArquivosHandler():
    operating_system:str 
    run_exec_cmd:str
    delete_files_cmd:str
+   delete_all_bin_files_cmd:str
 
    c_code_folder_path:str
    index_file_name:str
@@ -51,9 +52,11 @@ class TrabalhoArquivosHandler():
       if self.operating_system == "linux":
          self.run_exec_cmd = f"./{self.EXEC_NAME}"
          self.delete_files_cmd = f"rm -f "
+         self.delete_all_bin_files_cmd = f"rm -f *bin"
       else: #so é windows
-         self.run_exec_cmd = f"{self.EXEC_NAME}"
+         self.run_exec_cmd = f"{self.EXEC_NAME}.exe"
          self.delete_files_cmd = f"del /f "
+         self.delete_all_bin_files_cmd = f"Remove-Item -Force -Recurse *.bin"
 
    def __run_command(self,stdin:str)->str:
       """
@@ -190,7 +193,7 @@ class TrabalhoArquivosHandler():
       
       return True      
 
-   def delete_binary_files(self,binary_file_name:str,index_file_name:str)->bool:
+   def delete_binary_files(self,binary_file_name:str = "",index_file_name:str="")->bool:
       """
       Deleta o arquivo binário de dados e de índice passados como parâmetro
       
@@ -198,8 +201,11 @@ class TrabalhoArquivosHandler():
       if ".bin" not in binary_file_name or ".bin" not in index_file_name:
          print("ERRO: A função de remoção de arquivos binários recebeu nomes de arquivos sem o .bin como parâmetro")
          return False
-
-      delete_files_cmd: str =f"{self.delete_files_cmd} {binary_file_name} {index_file_name}"
+      
+      if not binary_file_name and not index_file_name:
+         delete_files_cmd = self.delete_all_bin_files_cmd
+      else:
+         delete_files_cmd: str =f"{self.delete_files_cmd} {binary_file_name} {index_file_name}"
       self.__run_command(delete_files_cmd)
 
       return True

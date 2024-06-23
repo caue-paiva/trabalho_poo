@@ -11,10 +11,10 @@ C_FILE_DIR = trabalho_arquivos
 
 # detectando o sistema operacional
 ifeq ($(OS), Windows_NT)
-    RM = rmdir /S /Q
+    RM = cmd /c rmdir /S /Q 
     MKDIR = mkdir
     PYTHON = python
-    KILL = taskkill /F /IM python.exe
+    KILL = taskkill /F /IM python.exe /T
     RUN_JAVA = cmd /c "java -cp $(OUT_DIR) Main"
 else
     RM = rm -rf

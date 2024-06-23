@@ -8,11 +8,12 @@ class ClientMessagesHandler:
    client_bin_data_file:str #nome do arquivo de dados e índice do cliente
    client_bin_index_file:str
 
-   def __init__(self, client_addr:int) -> None:
+   def __init__(self, client_addr:int, clean_prev_bin_files:bool) -> None:
       self.client_addr = client_addr
       self.client_bin_data_file = f"{client_addr}_dados.bin"
       self.client_bin_index_file = f"{client_addr}_index.bin"
-
+      if clean_prev_bin_files:
+         self.remove_client_data(True)
       self.__ArquivosHandler.csv_to_binary(self.client_bin_data_file,self.client_bin_index_file)
 
    def __split_messages(self, message:str)->dict:
@@ -30,8 +31,6 @@ class ClientMessagesHandler:
       funct_params:dict = self.__split_messages(client_message) #parâmetros que o cliente mandou na mensagem, tem que ter a funcionalidade a ser
       #rodada e se necessário os parâmetros dos jogadores
       functionality:str = funct_params.pop("functionality","") #pega a funcionalidade e remove essa key do dict
-      if not functionality:
-         raise IOError("messagem do socket deve conter uma funcionalidade do trabalho de arquivos")
       
       functionality = functionality.strip()
       match (functionality):
@@ -58,8 +57,13 @@ class ClientMessagesHandler:
             result: bool = self.__ArquivosHandler.update_player(self.client_bin_data_file,self.client_bin_index_file,funct_params)
             return "True" if result else ""
          
-   def remove_client_data(self)->bool:
+      return ""
+         
+   def remove_client_data(self, remove_all_binaries:bool)->bool:
       """
       Remove os arquivos binários relativos ao cliente, usado quando o cliente encerra uma conexão
       """
-      return self.__ArquivosHandler.delete_binary_files(self.client_bin_data_file,self.client_bin_index_file)
+      if remove_all_binaries: #remove todos os binários das conexões anteriores
+         return self.__ArquivosHandler.delete_binary_files()
+      else: #remove apenas alguns binários específicos
+         return self.__ArquivosHandler.delete_binary_files(self.client_bin_data_file,self.client_bin_index_file)
