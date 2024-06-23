@@ -6,12 +6,11 @@ The FIFA Database Project is a desktop application developed in Java Swing for a
 
 ### Features
 
-- **Load Data**: Load player data files from FIFA 2017 to 2023.
-- **Search**: Search for players using multiple criteria.
-- **View and Edit**: View detailed player information, edit, and update records.
-- **Delete**: Remove player records from the database.
-- **Generate Reports**: Create a text-based report of all players in the database.
-- **Socket Communication**: The Java GUI connects to a Python server, which communicates with a C program to perform operations on the data files.
+- **Load data**: loads player data files from FIFA 2017 to 2023.
+- **Search**: Search for players using various criteria.
+- **View and Edit**: View detailed player information, edit and update records.
+- **Delete**: Removes player records from the database.
+- **Socket Communication**: The Java GUI connects to a Python server, which communicates with a C program to perform operations on data files.
 
 ## Installation
 
@@ -34,7 +33,7 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
 2. Open PowerShell as an administrator and run:
 
     ```powershell
-    choco install make
+    1. choco install make
     ```
 
 3. If Python or OpenJDK/Java is not installed, you can install them via Chocolatey as well.
@@ -59,12 +58,16 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
 
     ![Edit Path](readmeImgs/a.png)
 
-4. Add a new entry with the path where GCC was installed, typically: `` C:\MinGW\bin ``
+4. Add a new entry with the path where GCC was installed, typically:
+
+    ```bash
+    1. C:\MinGW\bin
+    ```
 
 5. Confirm the changes. To verify the installation, open PowerShell and run:
 
     ```bash
-    gcc --version
+    1. gcc --version
     ```
 
     ![GCC Version](readmeImgs/c.png)
@@ -75,41 +78,41 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
 
 ### Clone the Repository
 
-```bash
-git clone https://github.com/caue-paiva/trabalho_poo.git
-```
-```bash
-cd trabalho_poo
-```
+    ```bash
+    1. git clone https://github.com/caue-paiva/trabalho_poo.git
+    ```
+    ```bash
+    2. cd trabalho_poo
+    ```
 
 ### Run the Program
 
 #### Linux
 
-```bash
-make
-```
-```bash
-make run
-```
+    ```bash
+    1. make
+    ```
+    ```bash
+    2. make run
+    ```
 
 #### Windows
 
-```powershell
-make
-```
-```powershell
-make clean
-```
-```powershell
-make run_server
-```
+    ```powershell
+    1. make
+    ```
+    ```powershell
+    2. make clean
+    ```
+    ```powershell
+    3. make run_server
+    ```
 
 In another PowerShell window, run:
 
-```powershell
-make run_interface
-```
+    ```powershell
+    1. make run_interface
+    ```
 
 ## Project Structure
 
@@ -130,8 +133,6 @@ make run_interface
 ## Important Notes
 
 - The system is designed to run on both Windows and Linux.
-
-
 
 ## Additional Information
 
