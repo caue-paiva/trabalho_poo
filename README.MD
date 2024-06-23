@@ -134,14 +134,14 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
 
 #### Windows
 
-1. Build the project
-    ```powershell
-    make
-    ```
-
-2. Clean previous builds (important for python socket)
+1. Clean previous builds (important for python socket)
     ```powershell
     make clean
+    ```
+
+2. Build the project
+    ```powershell
+    make
     ```
 
 3. Run the server
