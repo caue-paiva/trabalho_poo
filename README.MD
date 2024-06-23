@@ -17,10 +17,10 @@ The FIFA Database Project is a desktop application developed in Java Swing for a
 
 ### Requirements
 
-- Java or OpenJDK
-- Python
-- GCC
-- Make
+- [Java](https://www.oracle.com/java/technologies/javase-downloads.html) or [OpenJDK](https://openjdk.java.net/)
+- [Python](https://www.python.org/)
+- [GCC](https://gcc.gnu.org/)
+- [Make](https://www.gnu.org/software/make/)
 
 ### Linux
 
