@@ -276,6 +276,7 @@ public class FIFAFetchGUI {
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(5, 2, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Adiciona padding
 
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField();
