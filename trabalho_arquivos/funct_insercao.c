@@ -64,6 +64,7 @@ bool __ins_logica_insercao(FILE*fp, Header*header , Registro* registro, ListaEnc
          char lixo = GARBAGE_DATA_TOKEN;
          for (int i = 0; i < espaco_sobrando; i++){ //loop para escrever o lixo
             int write_result = fwrite(&lixo,sizeof(char),1,fp);
+            fflush(fp);
             if (write_result != 1){
                resultado = false; //falha na escrita do lixo
                warn_printf("falha no fwrite");
@@ -111,14 +112,10 @@ bool ins_insere_registros(const char* nome_arquivo_dados,const char* nome_arquiv
       rgt_registro_destruir(&reg); //destroi o registro usado na inserção
    }
 
-  
-
    li_encad_destruir(&lista_removidos); //destroi a lista encad de removidos em memória
-   sucesso_insercao =  sucesso_insercao && ind_cria_index_fp(fp,nome_arquivo_index); //tenta criar o index a partir do FP do arquivo
-   //de dados, faz um and com a variavel bool de sucesso anterior
 
    rgt_header_fecha_modifica(&fp,header); //escreve o header atualizado e fecha o arquivo
    rgt_header_destruir(&header);
 
-   return sucesso_insercao;
+   return true;
 }

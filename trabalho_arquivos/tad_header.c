@@ -76,6 +76,8 @@ Header* rgt_header_ler_arquivo(FILE* fp){
 bool rgt_header_escreve_arquivo(const Header* header,FILE*fp){
    assert_2ptrs(fp,header);
 
+   printf("header a ser escrito, status %c , num de reg %d\n",header->status,header->nroRegArq);
+
    int numero_writes = 0; //numero de writes com sucesso
    numero_writes += fwrite(&header->status, sizeof(char), 1, fp); //cada fwrite deveria incrementar a variavel em 1
    numero_writes += fwrite(&header->topo, sizeof(long int), 1, fp);
@@ -160,7 +162,7 @@ bool rgt_header_fecha_escrita(Header* header, FILE** fp){
 FILE* rgt_header_abre_modifica(const char* nome_arquivo, Header* header){
    assert_2ptrs(nome_arquivo,header);
 
-   FILE* fp = fopen(nome_arquivo,RP); //abre arquivo pra escrita
+   FILE* fp = fopen(nome_arquivo,"r+b"); //abre arquivo pra escrita
    null_errno_check(fp);
    if (!fp){
       printf(DEFAULT_ERROR_MSG);
@@ -169,6 +171,7 @@ FILE* rgt_header_abre_modifica(const char* nome_arquivo, Header* header){
 
    char status = INCONSISTENT_HEADER; //header é colocado  como inconsistente
    int resultado_write = fwrite(&status,sizeof(char),1,fp);
+   fflush(fp);
    header->status = INCONSISTENT_HEADER;
    if (resultado_write == 0){ //caso a escrita do header falhe
       printf(DEFAULT_ERROR_MSG);
@@ -180,17 +183,18 @@ FILE* rgt_header_abre_modifica(const char* nome_arquivo, Header* header){
    long int proxByteOffset;
    int nroRegArq;
    int nroRegRem;
+  
 
    fread(&topo, sizeof(long int), 1, fp); //ler campos do header
    fread(&proxByteOffset, sizeof(long int), 1, fp);
    fread(&nroRegArq, sizeof(int), 1, fp);
    fread(&nroRegRem, sizeof(int), 1, fp);
 
-
    header->topo = topo; //coloca valores na struct header
    header->proxByteOffset = proxByteOffset;
    header->nroRegArq = nroRegArq;
    header->nroRegRem = nroRegRem;
+
 
    int seek_result = fseek(fp,0,SEEK_SET); //retorna 25 bytes, nesse caso não vai resultar em mais um acesso a página de disco pois do byteoffset 0-24 está tudo na mesma página
    errno_check(seek_result);               //esse fseek de volta foi feito pois a maioria das funcões precisa de um fp no byte 0 (padronização)  

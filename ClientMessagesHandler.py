@@ -57,7 +57,7 @@ class ClientMessagesHandler:
             result: bool = self.__ArquivosHandler.update_player(self.client_bin_data_file,self.client_bin_index_file,funct_params)
             return "True" if result else ""
          
-      return ""
+      return "" #retorno de string vazia caso o comando n seja um desses
          
    def remove_client_data(self, remove_all_binaries:bool)->bool:
       """
