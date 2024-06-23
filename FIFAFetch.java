@@ -58,10 +58,14 @@ public class FIFAFetch {
         if (return_str == null || return_str.isEmpty() || return_str.contains("inexistente")) {
             return null;
         }
+
+        // Substituir " Nacionalidade" por " | Nacionalidade"
+        if (return_str != null) {
+            return_str = return_str.replaceFirst("  Nacionalidade", " | Nacionalidade");
+        }
+
         return FIFAPlayer.parsePlayers(return_str);
     }
-
-    
 
     public Boolean removePlayer(String request) {
         if (!request.contains("5")) { // 5 é o código da funcionalidade de remoção
