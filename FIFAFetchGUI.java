@@ -141,12 +141,33 @@ public class FIFAFetchGUI {
     private static void openPlayerWindow(FIFAPlayer player) {
         JFrame playerFrame = new JFrame(player.name);
         playerFrame.setSize(300, 200);
-        playerFrame.setLayout(new GridLayout(3, 1));
+        playerFrame.setLayout(new BorderLayout());
 
-        JLabel nameLabel = new JLabel("Jogador: " + player.name + " com id: " + player.id);
-        playerFrame.add(nameLabel);
+        // Cria um painel principal com BoxLayout vertical
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        // cria o botão de remover com ícone
+        // Cria o rótulo para a imagem do jogador
+        ImageIcon playerIcon = new ImageIcon("imgs/player.png");
+        JLabel imageLabel = new JLabel(playerIcon);
+        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainPanel.add(imageLabel);
+
+        // Cria o rótulo para o nome do jogador
+        JLabel nameLabel = new JLabel("Jogador: " + player.name);
+        nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainPanel.add(nameLabel);
+
+        // Cria o rótulo para o id do jogador
+        JLabel idLabel = new JLabel("ID: " + player.id);
+        idLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainPanel.add(idLabel);
+
+        // Cria um painel para os botões com BoxLayout horizontal
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+
+        // Cria o botão de remover com ícone
         JButton removeButton = new JButton("  Remove Player");
         ImageIcon trashIcon = new ImageIcon("imgs/trash.png");
         removeButton.setIcon(trashIcon);
@@ -161,9 +182,12 @@ public class FIFAFetchGUI {
                 FIFAFetchGUI.removePlayer(player.id, playerFrame);
             }
         });
-        playerFrame.add(removeButton);
+        buttonPanel.add(removeButton);
 
-        // cria o botão de update com ícone
+        // Adiciona um espaço rígido entre os botões
+        buttonPanel.add(Box.createRigidArea(new Dimension(5, 0)));
+
+        // Cria o botão de update com ícone
         JButton updateButton = new JButton("  Update Player");
         ImageIcon updateIcon = new ImageIcon("imgs/update.png");
         updateButton.setIcon(updateIcon);
@@ -179,8 +203,12 @@ public class FIFAFetchGUI {
                 playerFrame.dispose();
             }
         });
-        playerFrame.add(updateButton);
+        buttonPanel.add(updateButton);
 
+        buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainPanel.add(buttonPanel);
+
+        playerFrame.add(mainPanel, BorderLayout.CENTER);
         playerFrame.setVisible(true);
     }
 
@@ -230,9 +258,9 @@ public class FIFAFetchGUI {
         remove_request.append(",id:").append(id);
         Boolean result = fifaFetch.removePlayer(remove_request.toString());
         if (result) {
-            JOptionPane.showMessageDialog(playerFrame, "Remoção com sucesso");
+            JOptionPane.showMessageDialog(playerFrame, "Successful removal!");
         } else {
-            JOptionPane.showMessageDialog(playerFrame, "Remoção falhou");
+            JOptionPane.showMessageDialog(playerFrame, "Removal failed!");
         }
         playerFrame.dispose();
 
@@ -242,7 +270,7 @@ public class FIFAFetchGUI {
     }
 
     private static void updatePlayer(FIFAPlayer player, JFrame playerFrame) {
-        JFrame updateFrame = new JFrame("Atualizar jogador");
+        JFrame updateFrame = new JFrame("Update Player");
         updateFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         updateFrame.setSize(400, 300);
 
@@ -273,7 +301,7 @@ public class FIFAFetchGUI {
         panel.add(clubLabel);
         panel.add(clubField);
 
-        JButton submitButton = new JButton("Atualizar");
+        JButton submitButton = new JButton("Update");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -295,9 +323,9 @@ public class FIFAFetchGUI {
 
                 Boolean result = fifaFetch.updatePlayer(update_request.toString());
                 if (result) {
-                    JOptionPane.showMessageDialog(playerFrame, "Atualização com sucesso");
+                    JOptionPane.showMessageDialog(playerFrame, "Update successfully!");
                 } else {
-                    JOptionPane.showMessageDialog(playerFrame, "Atualização falhou");
+                    JOptionPane.showMessageDialog(playerFrame, "Update failed!");
                 }
                 FIFAFetchGUI.updatePlayersList(player.id, name, country, club, Integer.parseInt(age));
                 updateFrame.dispose();
