@@ -62,6 +62,6 @@ class SocketsHandler():
     def clients_info(self) -> str:
         return str([str(address[1]) for address in self.clients.values()])
 
-if __name__ == "__main__":
+if __name__ == "__main__": #roda o server de socket
     my_socket = SocketsHandler()
     my_socket.receive_messages()

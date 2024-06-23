@@ -1,5 +1,12 @@
 import os, subprocess
 
+"""
+Para em python para fazer a interface com o trabalho de arquivo por meio de comandos no terminal criados pela função run
+do módulo subprocess. Ela é capaz de identificar qual o SO do PC e usar comandos para linux ou windows. 
+Além de rodar as funcionalidades do trabalho de arquivos, essa classe tem métodos para limpar os arquivos 
+binários.
+"""
+
 class TrabalhoArquivosHandler():
 
    LINUX_OS_IDENTIFIER = "posix" #identificadores ao rodar o comando os.name para ver se o SO é windows ou linux
