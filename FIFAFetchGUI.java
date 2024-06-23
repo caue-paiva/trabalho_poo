@@ -58,12 +58,13 @@ public class FIFAFetchGUI {
             }
         });
 
-        JButton showEditButton = new JButton("Show Edit");
+        JButton showEditButton = new JButton("Edit Players");
         showEditButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showEditButtons = !showEditButtons; // alterna o estado do botão de edição
-                showPlayersButtons(); // atualiza a visibilidade dos botões de edição
+                showEditButton.setText(showEditButtons ? "Abort Edition" : "Edit Players"); // atualiza o texto do botão de edição
+                showPlayersButtons(); // atualiza a exibição dos botões de jogador
             }
         });
 
