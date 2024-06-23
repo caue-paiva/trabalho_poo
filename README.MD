@@ -127,14 +127,9 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
     make
     ```
 
-2. Run the server
+2. Run the server and interface
     ```bash
-    make run_server
-    ```
-
-3. Run the interface
-    ```bash
-    make run_interface
+    make run
     ```
 
 #### Windows
