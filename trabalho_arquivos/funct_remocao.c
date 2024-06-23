@@ -153,7 +153,6 @@ bool rm_remove_registros(const char* nome_arquivo_dados, const char*  nome_arqui
       ind_index_mem_destroi(&index); //libera memória do index
       return false;
    }
-   printf("header em memoria o num de reg: %d\n",header->nroRegArq);
 
    bool novo_removido = false;   //flag de que pelo menos um registro foi removido
    ListaEncad* ja_removidos = NULL; //essa lista vai ser criada como NULL e será inicializada de acordo com o tipo de remoção (sequencial x index)

@@ -106,7 +106,6 @@ bool ins_insere_registros(const char* nome_arquivo_dados,const char* nome_arquiv
   
    for (int i = 0; i < numero_insercoes; i++){ //loop por todas as inserções
       Registro* reg = query_processa_linha_comando_insercao(); //le a linha de comando e cria um registro a partir disso
-      printf("reg lido id: %d",reg->id);
       long int offset_colocado;
       bool resultado = __ins_logica_insercao(fp,header,reg,lista_removidos,&offset_colocado); //tenta inserir o registro
       sucesso_insercao = sucesso_insercao && resultado; //and com o resultado da inserção anterior e o atual
