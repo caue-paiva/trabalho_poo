@@ -58,11 +58,7 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
 
     ![Edit Path](readmeImgs/a.png)
 
-4. Add a new entry with the path where GCC was installed, typically:
-
-    ```bash
-    1. C:\MinGW\bin
-    ```
+4. Add a new entry with the path where GCC was installed, typically: ``C:\MinGW\bin``
 
 5. Confirm the changes. To verify the installation, open PowerShell and run:
 
@@ -78,41 +74,41 @@ Setting up the environment on Linux is straightforward. Please refer to the offi
 
 ### Clone the Repository
 
-    ```bash
-    1. git clone https://github.com/caue-paiva/trabalho_poo.git
-    ```
-    ```bash
-    2. cd trabalho_poo
-    ```
+```bash
+git clone https://github.com/caue-paiva/trabalho_poo.git
+```
+```bash
+cd trabalho_poo
+```
 
 ### Run the Program
 
 #### Linux
 
-    ```bash
-    1. make
-    ```
-    ```bash
-    2. make run
-    ```
+```
+make
+```
+```bash
+make run
+```
 
 #### Windows
 
-    ```powershell
-    1. make
-    ```
-    ```powershell
-    2. make clean
-    ```
-    ```powershell
-    3. make run_server
-    ```
+```powershell
+make
+```
+```powershell
+make clean
+```
+```powershell
+make run_server
+```
 
 In another PowerShell window, run:
 
-    ```powershell
-    1. make run_interface
-    ```
+```powershell
+make run_interface
+```
 
 ## Project Structure
 
