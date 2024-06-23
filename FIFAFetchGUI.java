@@ -1,10 +1,44 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.RoundRectangle2D;
 import java.util.List;
 
+class RoundedTextField extends JTextField {
+    private Shape shape;
+
+    public RoundedTextField(int size) {
+        super(size);
+        setOpaque(false); // Assegura que o campo seja transparente para vermos as bordas arredondadas
+        setBorder(new EmptyBorder(5, 10, 5, 10)); // Define um padding interno
+    }
+
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(getBackground());
+        g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
+        super.paintComponent(g2);
+    }
+
+    protected void paintBorder(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(getForeground());
+        g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
+    }
+
+    public boolean contains(int x, int y) {
+        if (shape == null || !shape.getBounds().equals(getBounds())) {
+            shape = new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
+        }
+        return shape.contains(x, y);
+    }
+}
+
 public class FIFAFetchGUI {
-    private static JTextField idField, ageField, nameField, countryField, clubField;
+    private static RoundedTextField idField, ageField, nameField, countryField, clubField;
     private static JPanel resultPanel;
     private static FIFAFetch fifaFetch;
     private static List<FIFAPlayer> playersList;
@@ -13,7 +47,7 @@ public class FIFAFetchGUI {
     public static void createAndShowGUI() {
         JFrame frame = new JFrame("FIFA Player Fetch");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
+        frame.setSize(1013, 568);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -29,15 +63,15 @@ public class FIFAFetchGUI {
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding ao redor do painel
 
         JLabel idLabel = new JLabel("ID:");
-        idField = new JTextField();
+        idField = new RoundedTextField(15);
         JLabel ageLabel = new JLabel("Age:");
-        ageField = new JTextField();
+        ageField = new RoundedTextField(15);
         JLabel nameLabel = new JLabel("Name:");
-        nameField = new JTextField();
+        nameField = new RoundedTextField(15);
         JLabel countryLabel = new JLabel("Country:");
-        countryField = new JTextField();
+        countryField = new RoundedTextField(15);
         JLabel clubLabel = new JLabel("Club:");
-        clubField = new JTextField();
+        clubField = new RoundedTextField(15);
 
         inputPanel.add(idLabel);
         inputPanel.add(idField);
@@ -80,7 +114,8 @@ public class FIFAFetchGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showEditButtons = !showEditButtons; // Alterna o estado do botão de edição
-                showEditButton.setText(showEditButtons ? " Abort Edition" : " Edit Players"); // Atualiza o texto do botão de edição
+                showEditButton.setText(showEditButtons ? " Abort Edition" : " Edit Players"); // Atualiza o texto do
+                                                                                              // botão de edição
                 showPlayersButtons(); // Atualiza a exibição dos botões de jogador
             }
         });
@@ -224,10 +259,10 @@ public class FIFAFetchGUI {
     private static void showPlayersButtons() {
         resultPanel.removeAll();
         ImageIcon miniPlayerIcon = new ImageIcon("imgs/miniPlayer.png");
-        
+
         for (FIFAPlayer player : playersList) {
             JPanel playerPanel = new JPanel(new BorderLayout());
-            
+
             JLabel playerNameLabel = new JLabel(player.name, miniPlayerIcon, JLabel.LEFT);
             playerNameLabel.setHorizontalAlignment(SwingConstants.LEFT); // Nome do jogador sempre a esquerda
 
@@ -255,7 +290,8 @@ public class FIFAFetchGUI {
 
             // Adiciona espaço extra quando os botões de edição estão ocultos
             if (!showEditButtons) {
-                playerPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0)); // Espaçamento extra quando o botão de edição está oculto
+                playerPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0)); // Espaçamento extra quando o botão
+                                                                                    // de edição está oculto
             }
 
             resultPanel.add(playerPanel);
@@ -290,30 +326,38 @@ public class FIFAFetchGUI {
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Adiciona padding
 
         JLabel nameLabel = new JLabel("Name:");
-        JTextField nameField = new JTextField();
+        RoundedTextField nameField = new RoundedTextField(15);
         nameField.setText(player.name);
         panel.add(nameLabel);
         panel.add(nameField);
 
         JLabel ageLabel = new JLabel("Age:");
-        JTextField ageField = new JTextField();
+        RoundedTextField ageField = new RoundedTextField(15);
         ageField.setText(String.valueOf(player.age));
         panel.add(ageLabel);
         panel.add(ageField);
 
         JLabel countryLabel = new JLabel("Country:");
-        JTextField countryField = new JTextField();
+        RoundedTextField countryField = new RoundedTextField(15);
         countryField.setText(player.country);
         panel.add(countryLabel);
         panel.add(countryField);
 
         JLabel clubLabel = new JLabel("Club:");
-        JTextField clubField = new JTextField();
+        RoundedTextField clubField = new RoundedTextField(15);
         clubField.setText(player.club);
         panel.add(clubLabel);
         panel.add(clubField);
 
-        JButton submitButton = new JButton("Update");
+        JButton submitButton = new JButton(" Update");
+        ImageIcon updateIcon = new ImageIcon("imgs/update.png");
+        submitButton.setIcon(updateIcon);
+        submitButton.setHorizontalTextPosition(SwingConstants.RIGHT);
+        submitButton.setVerticalTextPosition(SwingConstants.CENTER);
+        submitButton.setContentAreaFilled(false);
+        submitButton.setBorderPainted(false);
+        submitButton.setFocusPainted(false);
+        submitButton.setOpaque(false);
         configureButton(submitButton, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -343,6 +387,7 @@ public class FIFAFetchGUI {
                 updateFrame.dispose();
             }
         });
+
         panel.add(new JLabel());
         panel.add(submitButton);
 
@@ -378,6 +423,7 @@ public class FIFAFetchGUI {
             public void mouseEntered(MouseEvent e) {
                 button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
+
             @Override
             public void mouseExited(MouseEvent e) {
                 button.setCursor(Cursor.getDefaultCursor());
