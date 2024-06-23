@@ -9,7 +9,7 @@ public class FIFAFetchGUI {
     private static JPanel resultPanel;
     private static FIFAFetch fifaFetch;
     private static List<FIFAPlayer> playersList;
-    private static boolean showEditButtons = false; // raastreia o estado do botão de edição
+    private static boolean showEditButtons = false; // Rastrea o estado do botão de edição
 
     public static void createAndShowGUI() {
         JFrame frame = new JFrame("FIFA Player Fetch");
@@ -17,8 +17,17 @@ public class FIFAFetchGUI {
         frame.setSize(600, 400);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(8, 2, 10, 10)); // criando uma grid
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // padding ao redor do painel
+        panel.setLayout(new BorderLayout());
+
+        // Texto de boas-vindas com estilo
+        JLabel welcomeLabel = new JLabel("<html><body style='text-align: center; font-size: 14px; padding: 10px;'>"
+                + "Welcome to FIFAFetch, here you have access to all players present in the FIFA game, enjoy!"
+                + "</body></html>", JLabel.CENTER);
+
+        // Painel para os campos de entrada
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new GridLayout(8, 2, 10, 10));
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding ao redor do painel
 
         JLabel idLabel = new JLabel("ID:");
         idField = new JTextField();
@@ -31,16 +40,16 @@ public class FIFAFetchGUI {
         JLabel clubLabel = new JLabel("Club:");
         clubField = new JTextField();
 
-        panel.add(idLabel);
-        panel.add(idField);
-        panel.add(ageLabel);
-        panel.add(ageField);
-        panel.add(nameLabel);
-        panel.add(nameField);
-        panel.add(countryLabel);
-        panel.add(countryField);
-        panel.add(clubLabel);
-        panel.add(clubField);
+        inputPanel.add(idLabel);
+        inputPanel.add(idField);
+        inputPanel.add(ageLabel);
+        inputPanel.add(ageField);
+        inputPanel.add(nameLabel);
+        inputPanel.add(nameField);
+        inputPanel.add(countryLabel);
+        inputPanel.add(countryField);
+        inputPanel.add(clubLabel);
+        inputPanel.add(clubField);
 
         JButton searchButton = new JButton("Search");
         searchButton.addActionListener(new ActionListener() {
@@ -62,24 +71,26 @@ public class FIFAFetchGUI {
         showEditButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                showEditButtons = !showEditButtons; // alterna o estado do botão de edição
-                showEditButton.setText(showEditButtons ? "Abort Edition" : "Edit Players"); // atualiza o texto do botão
-                                                                                            // de edição
-                showPlayersButtons(); // atualiza a exibição dos botões de jogador
+                showEditButtons = !showEditButtons; // Alterna o estado do botão de edição
+                showEditButton.setText(showEditButtons ? "Abort Edition" : "Edit Players"); // Atualiza o texto do botão de edição
+                showPlayersButtons(); // Atualiza a exibição dos botões de jogador
             }
         });
 
-        panel.add(new JLabel());
-        panel.add(searchButton);
-        panel.add(new JLabel());
-        panel.add(showAllButton);
-        panel.add(new JLabel());
-        panel.add(showEditButton);
+        inputPanel.add(new JLabel());
+        inputPanel.add(searchButton);
+        inputPanel.add(new JLabel());
+        inputPanel.add(showAllButton);
+        inputPanel.add(new JLabel());
+        inputPanel.add(showEditButton);
 
         resultPanel = new JPanel();
         resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
         JScrollPane scrollPane = new JScrollPane(resultPanel);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // padding ao redor do scrollPane
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding ao redor do scrollPane
+
+        panel.add(welcomeLabel, BorderLayout.NORTH);
+        panel.add(inputPanel, BorderLayout.CENTER);
 
         frame.getContentPane().add(panel, BorderLayout.NORTH);
         frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
@@ -214,16 +225,19 @@ public class FIFAFetchGUI {
 
     private static void showPlayersButtons() {
         resultPanel.removeAll();
+        ImageIcon miniPlayerIcon = new ImageIcon("imgs/miniPlayer.png");
+        
         for (FIFAPlayer player : playersList) {
             JPanel playerPanel = new JPanel(new BorderLayout());
-            JLabel playerNameLabel = new JLabel(player.name);
-            playerNameLabel.setHorizontalAlignment(SwingConstants.LEFT); // nome do jogador sempre a esquerda
+            
+            JLabel playerNameLabel = new JLabel(player.name, miniPlayerIcon, JLabel.LEFT);
+            playerNameLabel.setHorizontalAlignment(SwingConstants.LEFT); // Nome do jogador sempre a esquerda
 
-            // pegando a imagem do botão de edição
+            // Pegando a imagem do botão de edição
             ImageIcon editIcon = new ImageIcon("imgs/pencil.png");
             JButton editButton = new JButton(editIcon);
 
-            // tornar o botão transparente
+            // Tornar o botão transparente
             editButton.setOpaque(false);
             editButton.setContentAreaFilled(false);
             editButton.setBorderPainted(false);
@@ -236,15 +250,14 @@ public class FIFAFetchGUI {
                 }
             });
 
-            editButton.setVisible(showEditButtons); // defini a visibilidade com base no estado de showEditButtons
+            editButton.setVisible(showEditButtons); // Define a visibilidade com base no estado de showEditButtons
 
             playerPanel.add(playerNameLabel, BorderLayout.WEST);
-            playerPanel.add(editButton, BorderLayout.EAST); // botão de editar sempre a direita
+            playerPanel.add(editButton, BorderLayout.EAST); // Botão de editar sempre a direita
 
-            // adiciona espaço extra quando os botões de edição estão ocultos
+            // Adiciona espaço extra quando os botões de edição estão ocultos
             if (!showEditButtons) {
-                playerPanel.setBorder(BorderFactory.createEmptyBorder(9, 0, 9, 0)); // espaçamento extra quando o botão
-                                                                                    // de edição está oculto
+                playerPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0)); // Espaçamento extra quando o botão de edição está oculto
             }
 
             resultPanel.add(playerPanel);
