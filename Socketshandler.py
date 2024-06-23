@@ -1,7 +1,15 @@
-import socket, threading, os
+import socket
 from ClientMessagesHandler import ClientMessagesHandler
 
+
+
 class SocketsHandler():
+
+    """
+    Classe em Python para trabalhar como o servidor do sistema de comunicação de Sockets, tem constantes de classe como o IP e a porta do servidor.
+    Seus métodos implementam loops infinitos onde o servidor espera receber e depois enviar mensagens relacionadas à funcionalidade para os clientes
+    """
+
     PORT = 9090
     MSG_BUFFER_SIZE = 1024
     ENCODING = "utf-8"
@@ -39,7 +47,6 @@ class SocketsHandler():
             except Exception as e:
                 removed_addr = self.clients.pop(client)  # remove cliente
                 client.close()  # fecha conexão com cliente
-                print(f"endereço removido {str(removed_addr[1])}")
                 break  # sai do loop
 
     def receive_messages(self) -> None:

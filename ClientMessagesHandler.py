@@ -1,6 +1,16 @@
 from TrabalhoArquivosHandler import TrabalhoArquivosHandler
 
+
+
 class ClientMessagesHandler:
+
+   """
+   Classe para transformar mensagens do client do socket em JAVA em comandos para a classe de handler do trabalho de arquivos
+   Serve de uma ponte para a comunicação do socket e a comunicação com o trabalho de arquivos
+
+   Essa classe é instanciada para cada cliente com seu ID único, desse modo ao ser instanciada essa classe compila o CSV em binário
+   e pode limpar os binários de clientes antigos.
+   """
 
    __ArquivosHandler: TrabalhoArquivosHandler = TrabalhoArquivosHandler() #objeto estático interno da classe, é  a interface com o trabalho de arquivo
 
