@@ -1,7 +1,5 @@
 from TrabalhoArquivosHandler import TrabalhoArquivosHandler
 
-
-
 class ClientMessagesHandler:
 
    __ArquivosHandler: TrabalhoArquivosHandler = TrabalhoArquivosHandler() #objeto estático interno da classe, é  a interface com o trabalho de arquivo
@@ -42,10 +40,14 @@ class ClientMessagesHandler:
             pass
          
          case "2": #printa todos jogadores
-            return self.__ArquivosHandler.show_all_players(self.client_bin_data_file)
+            result = self.__ArquivosHandler.show_all_players(self.client_bin_data_file)
+            print(f"Resultado da funcionalidade 2: {result}") # Adicione este log para depurar o resultado
+            return result
          
          case "3": #procura jogador(es)
-            return self.__ArquivosHandler.search_players(self.client_bin_data_file,funct_params)
+            result = self.__ArquivosHandler.search_players(self.client_bin_data_file,funct_params)
+            print(f"Resultado da funcionalidade 3: {result}") # Adicione este log para depurar o resultado
+            return result
          
          case "5": #deleta um jogador
             result:bool =  self.__ArquivosHandler.delete_players(self.client_bin_data_file,self.client_bin_index_file,funct_params)
@@ -64,7 +66,3 @@ class ClientMessagesHandler:
       Remove os arquivos binários relativos ao cliente, usado quando o cliente encerra uma conexão
       """
       return self.__ArquivosHandler.delete_binary_files(self.client_bin_data_file,self.client_bin_index_file)
-
-   
-
-#print(ClientMessagesHandler.__split_messages("funcionality:1,id:1298,age:32,country:GERMANY,club:asas,name:suhu"))

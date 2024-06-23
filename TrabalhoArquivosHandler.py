@@ -61,9 +61,11 @@ class TrabalhoArquivosHandler():
       """
       run_exec_command: str = f"{self.run_exec_cmd}"
 
+      print(f"Executando comando: {stdin}") # Adicione este log para ver o comando que está sendo executado
       result = subprocess.run(run_exec_command,input=stdin,capture_output=True,text=True,shell=True,cwd=self.c_code_folder_path)
       if result.returncode != 0:
          raise RuntimeError(f"falha ao executar comando com input {stdin}")
+      print(f"Resultado do comando: {result.stdout}") # Adicione este log para ver a saída do comando
       return result.stdout
       
    def csv_to_binary(self, data_file_name:str, index_file_name:str)->None:
@@ -201,10 +203,3 @@ class TrabalhoArquivosHandler():
       self.__run_command(delete_files_cmd)
 
       return True
-
-#print(handler.show_all_players("dado1.bin"))
-   #print(handler.search_players("dado1.bin",{"country":"germany","id": 224424})) #procura antes remoção
-   #result:bool = handler.delete_players("dado1.bin","index1.bin",{"country":"germany","id": 2})
-   #print(result)
-   #print(handler.search_players("dado1.bin",{"country":"germany","id": 224424})) #procura depois
-   #result:bool = handler.insert_player("dado1.bin","index1.bin",{"id":3,"age":24 ,"name": "D. CHORIN","country":"CHUNGUS"})

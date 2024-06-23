@@ -17,7 +17,7 @@ public class FIFAFetchGUI {
         frame.setSize(600, 400);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(7, 2));
+        panel.setLayout(new GridLayout(8, 2)); // Ajuste para 8 linhas
 
         JLabel idLabel = new JLabel("ID:");
         idField = new JTextField();
@@ -49,8 +49,18 @@ public class FIFAFetchGUI {
             }
         });
 
+        JButton showAllButton = new JButton("Show All Players");
+        showAllButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showAllPlayers();
+            }
+        });
+
         panel.add(new JLabel());
         panel.add(searchButton);
+        panel.add(new JLabel()); // Espaço vazio
+        panel.add(showAllButton);
 
         resultPanel = new JPanel();
         resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
@@ -65,7 +75,7 @@ public class FIFAFetchGUI {
         fifaFetch = new FIFAFetch();
     }
 
-    //método bara buscar jogadores baseados nos parâmetros do campos de busca, ativado quando o botão de busca é clicado
+    //método para buscar jogadores baseados nos parâmetros do campos de busca, ativado quando o botão de busca é clicado
     private static void searchPlayer() {
         String id = idField.getText(); //pega valores dos campos
         String age = ageField.getText();
@@ -99,13 +109,30 @@ public class FIFAFetchGUI {
         resultPanel.repaint(); //mostra GUI nova
     }
 
+    //método para mostrar todos os jogadores, ativado quando o botão "Show All Players" é clicado
+    private static void showAllPlayers() {
+        String request = "functionality:2"; // usa a funcionalidade correta para buscar todos os jogadores
+        List<FIFAPlayer> players = fifaFetch.getPlayers(request); // request para o servidor para pegar todos os jogadores
+        resultPanel.removeAll(); // limpa resultados anteriores
+
+        if (players == null) {
+            resultPanel.add(new JLabel("Nenhum jogador encontrado.")); // texto falando que nenhum jogador foi encontrado
+        } else {
+            FIFAFetchGUI.playersList = players; // seta variável estática com a lista de jogadores
+            FIFAFetchGUI.showPlayersButtons(); // atualiza GUI com os jogadores buscados
+        }
+
+        resultPanel.revalidate();
+        resultPanel.repaint(); // mostra GUI nova
+    }
+
     //função chamada quando alguém clica no botão de cada jogador mostrado na GUI
     private static void openPlayerWindow(FIFAPlayer player) {
         JFrame playerFrame = new JFrame(player.name); //cria frame, seta o tamanho e layout de grid
         playerFrame.setSize(300, 200);
         playerFrame.setLayout(new GridLayout(3, 1));
 
-        JLabel nameLabel = new JLabel("Jogador: " + player.name + "com id: " + player.id); //label de identificação do jogador
+        JLabel nameLabel = new JLabel("Jogador: " + player.name + " com id: " + player.id); //label de identificação do jogador
         playerFrame.add(nameLabel);
 
         JButton removeButton = new JButton("Remover Jogador"); //opção de remover jogador
@@ -256,5 +283,11 @@ public class FIFAFetchGUI {
         FIFAFetchGUI.showPlayersButtons(); //atualiza lista de botões na GUI
     }
 
-
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
 }
