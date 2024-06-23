@@ -18,7 +18,7 @@ class RoundedTextField extends JTextField {
 		Graphics2D g2 = (Graphics2D) g.create();
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(getBackground());
-		g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
+		g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15); // desenha o campo de texto com bordas arredondadas
 		super.paintComponent(g2);
 	}
 
@@ -26,14 +26,14 @@ class RoundedTextField extends JTextField {
 		Graphics2D g2 = (Graphics2D) g.create();
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(getForeground());
-		g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
+		g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15); // desenha a borda arredondada
 	}
 
 	public boolean contains(int x, int y) {
 		if (shape == null || !shape.getBounds().equals(getBounds())) {
-			shape = new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
+			shape = new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, 15, 15); // cria uma forma arredondada
 		}
-		return shape.contains(x, y);
+		return shape.contains(x, y); // verifica se o ponto está dentro da forma arredondada
 	}
 }
 
@@ -52,16 +52,17 @@ public class FIFAFetchGUI {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
-		// Texto de boas-vindas com estilo
+		// texto de boas-vindas com estilo
 		JLabel welcomeLabel = new JLabel("<html><body style='text-align: center; font-size: 14px; padding: 10px;'>"
 				+ "Welcome to FIFAFetch, here you have access to all players present in the FIFA game, enjoy!"
 				+ "</body></html>", JLabel.CENTER);
 
-		// Painel para os campos de entrada
+		// painel para os campos de entrada
 		JPanel inputPanel = new JPanel();
-		inputPanel.setLayout(new GridLayout(6, 2, 10, 10)); // 8 linhas, 2 colunas, espaçamento de 10px
+		inputPanel.setLayout(new GridLayout(6, 2, 10, 10)); // 6 linhas, 2 colunas, espaçamento de 10px
 		inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // padding ao redor do painel
 
+		// cria os labels e campos de texto para ID, Age, Name, Country e Club
 		JLabel idLabel = new JLabel("ID:");
 		idField = new RoundedTextField(15);
 		JLabel ageLabel = new JLabel("Age:");
@@ -73,6 +74,7 @@ public class FIFAFetchGUI {
 		JLabel clubLabel = new JLabel("Club:");
 		clubField = new RoundedTextField(15);
 
+		// adiciona os labels e campos ao painel de entrada
 		inputPanel.add(idLabel);
 		inputPanel.add(idField);
 		inputPanel.add(ageLabel);
@@ -84,57 +86,63 @@ public class FIFAFetchGUI {
 		inputPanel.add(clubLabel);
 		inputPanel.add(clubField);
 
-		// Botão de busca com ícone
+		// botão de busca com ícone
 		JButton searchButton = new JButton(" Search");
 		ImageIcon searchIcon = new ImageIcon("imgs/search.png");
 		searchButton.setIcon(searchIcon);
 		configureButton(searchButton, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				searchPlayer();
+				searchPlayer(); // chama a função de busca ao clicar no botão
 			}
 		});
 
-		// Botão de mostrar todos os jogadores com ícone
+		// botão de mostrar todos os jogadores com ícone
 		JButton showAllButton = new JButton(" Show All Players");
 		ImageIcon playersIcon = new ImageIcon("imgs/players.png");
 		showAllButton.setIcon(playersIcon);
 		configureButton(showAllButton, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				showAllPlayers();
+				showAllPlayers(); // chama a função de mostrar todos os jogadores ao clicar no botão
 			}
 		});
 
-		// Painel para os botões de "Search" e "Show All Players"
+		// painel para os botões de "Search" e "Show All Players"
 		JPanel buttonsPanel = new JPanel(new BorderLayout());
 
-		// Adiciona o botão de "Show All Players" ao lado esquerdo do painel
+		// adiciona o botão de "Show All Players" ao lado esquerdo do painel
 		buttonsPanel.add(showAllButton, BorderLayout.WEST);
 
-		// Adiciona o botão de "Search" ao lado direito do painel
+		// adiciona o botão de "Search" ao lado direito do painel
 		buttonsPanel.add(searchButton, BorderLayout.EAST);
 
-		// Adiciona o painel de botões ao painel de entrada
-		inputPanel.add(new JLabel()); // Adiciona uma célula vazia para espaçamento
+		// adiciona o painel de botões ao painel de entrada
+		inputPanel.add(new JLabel()); // adiciona uma célula vazia para espaçamento
 		inputPanel.add(buttonsPanel);
 
+		// cria o painel de resultados e adiciona a um JScrollPane
 		resultPanel = new JPanel();
 		resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
 		JScrollPane scrollPane = new JScrollPane(resultPanel);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // padding ao redor do scrollPane
 
+		// adiciona os componentes ao painel principal
 		panel.add(welcomeLabel, BorderLayout.NORTH);
 		panel.add(inputPanel, BorderLayout.CENTER);
 
+		// adiciona o painel principal e o painel de resultados ao frame
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 
+		// torna o frame visível
 		frame.setVisible(true);
 
+		// inicializa o objeto fifaFetch
 		fifaFetch = new FIFAFetch();
 	}
 
+	// função para buscar jogadores com base nos campos de entrada
 	private static void searchPlayer() {
 		String id = idField.getText();
 		String age = ageField.getText();
@@ -142,6 +150,7 @@ public class FIFAFetchGUI {
 		String country = countryField.getText();
 		String club = clubField.getText();
 
+		// constrói a string de solicitação com os parâmetros preenchidos
 		StringBuilder request = new StringBuilder("functionality:3");
 		if (!id.isEmpty())
 			request.append(",id:").append(id);
@@ -154,36 +163,41 @@ public class FIFAFetchGUI {
 		if (!club.isEmpty())
 			request.append(",club:").append(club);
 
+		// obtém a lista de jogadores correspondentes à solicitação
 		List<FIFAPlayer> players = fifaFetch.getPlayers(request.toString());
 		resultPanel.removeAll();
 
+		// verifica se algum jogador foi encontrado
 		if (players == null) {
 			resultPanel.add(new JLabel("Jogador(es) não encontrado(s)."));
 		} else {
 			FIFAFetchGUI.playersList = players;
-			FIFAFetchGUI.showPlayersButtons();
+			FIFAFetchGUI.showPlayersButtons(); // atualiza a exibição dos jogadores encontrados
 		}
 
 		resultPanel.revalidate();
 		resultPanel.repaint();
 	}
 
+	// função para mostrar todos os jogadores
 	private static void showAllPlayers() {
 		String request = "functionality:2";
 		List<FIFAPlayer> players = fifaFetch.getPlayers(request);
 		resultPanel.removeAll();
 
+		// verifica se algum jogador foi encontrado
 		if (players == null) {
 			resultPanel.add(new JLabel("Nenhum jogador encontrado."));
 		} else {
 			FIFAFetchGUI.playersList = players;
-			FIFAFetchGUI.showPlayersButtons();
+			FIFAFetchGUI.showPlayersButtons(); // atualiza a exibição de todos os jogadores
 		}
 
 		resultPanel.revalidate();
 		resultPanel.repaint();
 	}
 
+	// função para abrir a janela de detalhes de um jogador
 	private static void openPlayerWindow(FIFAPlayer player) {
 		JFrame playerFrame = new JFrame(player.name);
 		playerFrame.setSize(350, 200);
@@ -220,7 +234,7 @@ public class FIFAFetchGUI {
 		configureButton(removeButton, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FIFAFetchGUI.removePlayer(player.id, playerFrame);
+				FIFAFetchGUI.removePlayer(player.id, playerFrame); // chama a função de remover ao clicar no botão
 			}
 		});
 		buttonPanel.add(removeButton);
@@ -235,8 +249,8 @@ public class FIFAFetchGUI {
 		configureButton(updateButton, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FIFAFetchGUI.updatePlayer(player, playerFrame);
-				playerFrame.dispose();
+				FIFAFetchGUI.updatePlayer(player, playerFrame); // chama a função de atualização ao clicar no botão
+				playerFrame.dispose(); // fecha a janela do jogador após a atualização
 			}
 		});
 		buttonPanel.add(updateButton);
@@ -248,23 +262,24 @@ public class FIFAFetchGUI {
 		playerFrame.setVisible(true);
 	}
 
+	// função para exibir os botões de jogadores encontrados
 	private static void showPlayersButtons() {
 		resultPanel.removeAll();
 		ImageIcon miniPlayerIcon = new ImageIcon("imgs/miniPlayer.png");
 
-		// Painel para o título e os botões
+		// painel para o título e os botões
 		JPanel headerPanel = new JPanel(new BorderLayout());
 
-		// Adicionando o subtítulo "Players List"
+		// adicionando o subtítulo "Players List"
 		JLabel playersListLabel = new JLabel("Players List");
-		playersListLabel.setFont(new Font("Arial", Font.BOLD, 16)); // Definindo uma fonte maior e em negrito
+		playersListLabel.setFont(new Font("Arial", Font.BOLD, 16)); // define uma fonte maior e em negrito
 		headerPanel.add(playersListLabel, BorderLayout.WEST);
 
-		// Painel para os botões
+		// painel para os botões
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-		// Botão "Edit Players"
+		// botão "Edit Players"
 		JButton showEditButton = new JButton(" Edit Players");
 		ImageIcon editIcon = new ImageIcon("imgs/edit.png");
 		showEditButton.setIcon(editIcon);
@@ -272,22 +287,21 @@ public class FIFAFetchGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				showEditButtons = !showEditButtons; // alterna o estado do botão de edição
-				showEditButton.setText(showEditButtons ? " Abort Edition" : " Edit Players"); // atualiza o texto do botão
-																														// de edição
+				showEditButton.setText(showEditButtons ? " Abort Edition" : " Edit Players"); // atualiza o texto do botão de edição
 				showPlayersButtons(); // atualiza a exibição dos botões de jogador
 			}
 		});
 
-		// Adiciona os botões ao painel de botões
+		// adiciona os botões ao painel de botões
 		buttonPanel.add(showEditButton);
 
-		// Adiciona o painel de botões ao painel de cabeçalho
+		// adiciona o painel de botões ao painel de cabeçalho
 		headerPanel.add(buttonPanel, BorderLayout.EAST);
 
-		// Adiciona o painel de cabeçalho ao painel de resultados
+		// adiciona o painel de cabeçalho ao painel de resultados
 		resultPanel.add(headerPanel);
 
-		// Adiciona os jogadores
+		// adiciona os jogadores
 		for (FIFAPlayer player : playersList) {
 			JPanel playerPanel = new JPanel(new BorderLayout());
 
@@ -307,7 +321,7 @@ public class FIFAFetchGUI {
 			configureButton(editButton, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					openPlayerWindow(player);
+					openPlayerWindow(player); // abre a janela do jogador ao clicar no botão
 				}
 			});
 
@@ -318,8 +332,7 @@ public class FIFAFetchGUI {
 
 			// adiciona espaço extra quando os botões de edição estão ocultos
 			if (!showEditButtons) {
-				playerPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0)); // espaçamento extra quando o botão de
-																											// edição está oculto
+				playerPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0)); // espaçamento extra quando o botão de edição está oculto
 			}
 
 			resultPanel.add(playerPanel);
@@ -328,22 +341,25 @@ public class FIFAFetchGUI {
 		resultPanel.repaint();
 	}
 
+	// função para remover um jogador
 	private static void removePlayer(int id, JFrame playerFrame) {
 		StringBuilder remove_request = new StringBuilder("functionality:5");
 		remove_request.append(",id:").append(id);
 		Boolean result = fifaFetch.removePlayer(remove_request.toString());
 		if (result) {
-			JOptionPane.showMessageDialog(playerFrame, "Successful removal!");
+			JOptionPane.showMessageDialog(playerFrame, "Successful removal!"); // mostra mensagem de sucesso
 		} else {
-			JOptionPane.showMessageDialog(playerFrame, "Removal failed!");
+			JOptionPane.showMessageDialog(playerFrame, "Removal failed!"); // mostra mensagem de falha
 		}
 		playerFrame.dispose();
 
+		// remove o jogador da lista e atualiza a exibição dos botões de jogador
 		Boolean resultado = FIFAFetchGUI.playersList.removeIf(player -> player.id == id);
 		System.out.println(resultado);
 		FIFAFetchGUI.showPlayersButtons();
 	}
 
+	// função para atualizar um jogador
 	private static void updatePlayer(FIFAPlayer player, JFrame playerFrame) {
 		JFrame updateFrame = new JFrame("Update Player");
 		updateFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -353,6 +369,7 @@ public class FIFAFetchGUI {
 		panel.setLayout(new GridLayout(5, 2, 10, 10));
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // adiciona padding
 
+		// cria labels e campos de texto para atualização do jogador
 		JLabel nameLabel = new JLabel("Name:");
 		RoundedTextField nameField = new RoundedTextField(15);
 		nameField.setText(player.name);
@@ -377,6 +394,7 @@ public class FIFAFetchGUI {
 		panel.add(clubLabel);
 		panel.add(clubField);
 
+		// botão de submissão de atualização
 		JButton submitButton = new JButton(" Update");
 		ImageIcon updateIcon = new ImageIcon("imgs/update.png");
 		submitButton.setIcon(updateIcon);
@@ -394,6 +412,7 @@ public class FIFAFetchGUI {
 				String club = clubField.getText();
 				String age = ageField.getText();
 
+				// constrói a string de solicitação de atualização
 				StringBuilder update_request = new StringBuilder("functionality:7");
 				update_request.append(",id:").append(player.id);
 				if (!age.isEmpty())
@@ -405,6 +424,7 @@ public class FIFAFetchGUI {
 				if (!club.isEmpty())
 					update_request.append(",club:").append(club);
 
+				// envia a solicitação de atualização e mostra mensagem de sucesso ou falha
 				Boolean result = fifaFetch.updatePlayer(update_request.toString());
 				if (result) {
 					JOptionPane.showMessageDialog(playerFrame, "Update successfully!");
@@ -412,17 +432,18 @@ public class FIFAFetchGUI {
 					JOptionPane.showMessageDialog(playerFrame, "Update failed!");
 				}
 				FIFAFetchGUI.updatePlayersList(player.id, name, country, club, Integer.parseInt(age));
-				updateFrame.dispose();
+				updateFrame.dispose(); // fecha a janela de atualização após a operação
 			}
 		});
 
-		panel.add(new JLabel());
+		panel.add(new JLabel()); // adiciona uma célula vazia para espaçamento
 		panel.add(submitButton);
 
 		updateFrame.add(panel);
 		updateFrame.setVisible(true);
 	}
 
+	// função para atualizar a lista de jogadores após uma alteração
 	public static void updatePlayersList(int id, String name, String country, String club, int age) {
 		if (playersList == null) {
 			return;
@@ -436,9 +457,10 @@ public class FIFAFetchGUI {
 				break;
 			}
 		}
-		FIFAFetchGUI.showPlayersButtons();
+		FIFAFetchGUI.showPlayersButtons(); // atualiza a exibição dos botões de jogador
 	}
 
+	// função para configurar os botões
 	private static void configureButton(JButton button, ActionListener actionListener) {
 		button.addActionListener(actionListener);
 		button.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -449,20 +471,21 @@ public class FIFAFetchGUI {
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // muda o cursor para mão ao passar sobre o botão
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				button.setCursor(Cursor.getDefaultCursor());
+				button.setCursor(Cursor.getDefaultCursor()); // volta o cursor para padrão ao sair do botão
 			}
 		});
 	}
 
+	// função principal para iniciar a aplicação
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				createAndShowGUI();
+				createAndShowGUI(); // chama a função para criar e mostrar a GUI
 			}
 		});
 	}
