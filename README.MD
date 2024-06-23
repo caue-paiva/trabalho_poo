@@ -118,8 +118,7 @@ make run_interface
 - Search for players by ID, age, name, nationality, and club.
 - Display search results and allow selection for detailed view and editing.
 - Delete player records.
-- Generate a text report of all players.
-
+- 
 ### Server and Communication
 
 - The GUI connects to a Python server using sockets.
