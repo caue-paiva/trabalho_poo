@@ -36,9 +36,7 @@ class SocketsHandler():
         while True:
             try:
                 message: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING) #recebe mensagem do cliente
-                print(f"Mensagem recebida do cliente: {message}") # Adicione este log para depurar a mensagem recebida
-                action_result: str = client_handler.run_functionality(message) #roda funcionalidade do trabalho de arquivos
-                print(action_result)
+                action_result: str = client_handler.run_functionality(message) #roda funcionalidade do trabalho de arquivos            
                 action_result2 = action_result.replace("\n", " | ").replace("Busca 1", "").replace("|", "", 1) #parsing na string
                 action_result2 = action_result2 + '\n' #coloca \n no final da str para servir como o delimitador final
                 encoded = action_result2.encode("utf-8") 
