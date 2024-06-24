@@ -2,6 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FIFAPlayer {
+    /*
+    Classe para representar cada jogador e seus atributos, também contém um método para parsear a string retornada pelo servidor 
+    em uma lista de objetos FIFAPlayer
+    */
+
     public int id;
     public int age;
     public String name;

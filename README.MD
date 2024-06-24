@@ -1,178 +1,185 @@
-# FIFA Database Project
 
-## Project Description
+# Projeto Banco de Dados FIFA
 
-The FIFA Database Project is a desktop application developed in Java Swing for a user-friendly graphical interface. It allows the manipulation of player data from FIFA 2017 to FIFA 2023 games. This project uses socket communication in Python to interact with a backend developed in the C language for the [File Organization](https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=SCC0215&codcur=55041&codhab=0) course, also offered by our university.
+## Desenvolvedores do Projeto:
 
-### Features
+* [Cauê Paiva Lira](https://github.com/caue-paiva)
+* [Luiz Felipe Diniz Costa](https://github.com/lfelipediniz)
+* [João Pedro Alves Notari Godoy](https://github.com/joaopgodoy)
 
-- **Load data**: loads player data files from FIFA 2017 to 2023.
-- **Search**: Search for players using various criteria.
-- **View and Edit**: View detailed player information, edit and update records.
-- **Delete**: Removes player records from the database.
-- **Socket Communication**: The Java GUI connects to a Python server, which communicates with a C program to perform operations on data files.
+## Descrição do Projeto
 
-## How the Project Works
+O Projeto Banco de Dados FIFA é um aplicativo desktop, multiplataforma, desenvolvido em Java Swing para uma interface gráfica amigável. Ele permite a manipulação de dados de jogadores FIFA entre os anos 2017-23. Este projeto usa comunicação por socket em Python para interagir com um backend desenvolvido em linguagem C para o curso de Organização de Arquivos, também oferecido pela nossa universidade.
 
-### Overview
-The project integrates a Java Swing interface, a Python socket server, and a C backend. Here is how these components interact:
+### Funcionalidades
 
-### Graphical User Interface (GUI)
-- **Main.java**: Initializes the graphical user interface.
-- **FIFAFetch.java**: Manages socket connections for data transmission.
-- **FIFAFetchGUI.java**: Manages all user interactions for data manipulation including loading, searching, viewing, editing, and deleting player data.
-- **FIFAPlayer.java**: Structures player data for internal operations.
+- **Carregar dados**: Carrega arquivos de dados de jogadores FIFA entre os anos 2017-23, esse arquivo foi disponibilizado na disciplina de arquivos.
+- **Pesquisar**: Pesquisa jogadores usando vários critérios.
+- **Visualizar e Editar**: Visualiza informações detalhadas dos jogadores, edita e atualiza registros.
+- **Excluir**: Remove registros de jogadores do banco de dados.
+- **Comunicação por socket**: A interface Java se conecta a um servidor Python, que se comunica com um programa em C para realizar operações nos arquivos de dados.
 
-### Server and Communication
-- **Socketshandler.py**: Operates the socket server for GUI communications.
-- **ClientMessagesHandler.py**: Processes GUI commands and coordinates with the C backend.
-- **TrabalhoArquivosHandler.py**: Directly manages file operations based on server requests.
+## Como o Projeto Funciona
 
-### Data Manipulation
-- The C backend directly manipulates player data files, ensuring efficient and secure operations.
+### Visão Geral
+O projeto integra uma interface Java Swing, um servidor de socket em Python e um backend em C. Veja como esses componentes interagem:
 
-### Workflow
-1. User actions on the GUI trigger data operation commands.
-2. Commands are sent through sockets to the Python server.
-3. The server processes these requests, performs file operations, and sends back the results.
-4. GUI updates to reflect changes, providing real-time interaction.
+### Interface Gráfica do Usuário (GUI)
+- **Main.java**: Inicializa a interface gráfica do usuário.
+- **FIFAFetch.java**: Gerencia as conexões de socket para transmissão de dados.
+- **FIFAFetchGUI.java**: Gerencia todas as interações do usuário para manipulação de dados, incluindo carregar, pesquisar, visualizar, editar e excluir dados de jogadores.
+- **FIFAPlayer.java**: Estrutura os dados dos jogadores para operações internas.
 
-This modular architecture enhances system robustness and maintainability.
+### Servidor e Comunicação
+- **Socketshandler.py**: Opera o servidor de socket para comunicações com a GUI.
+- **ClientMessagesHandler.py**: Processa comandos da GUI e coordena com o backend em C.
+- **TrabalhoArquivosHandler.py**: Gerencia diretamente as operações de arquivos com base nas solicitações do servidor.
 
-## Installation
+### Manipulação de Dados
+- O backend em C manipula diretamente os arquivos de dados dos jogadores, garantindo operações eficientes.
 
-### Requirements
+### Fluxo de Trabalho
+1. Ações do usuário na GUI acionam comandos de operação de dados.
+2. Os comandos são enviados por socket para o servidor Python.
+3. O servidor processa essas solicitações, realiza operações de arquivo e envia os resultados de volta.
+4. A GUI é atualizada para refletir as mudanças, proporcionando interação em tempo real.
 
-- [Java](https://www.oracle.com/java/technologies/javase-downloads.html) or [OpenJDK](https://openjdk.java.net/)
+Esta arquitetura modular melhora a robustez e a manutenção do sistema, isolando as responsabilidades de cada módulo.
+
+## Instalação
+
+### Requisitos
+
+- [Java](https://www.oracle.com/java/technologies/javase-downloads.html) ou [OpenJDK](https://openjdk.java.net/)
 - [Python](https://www.python.org/)
 - [GCC](https://gcc.gnu.org/)
 - [Make](https://www.gnu.org/software/make/)
 
 ### Linux
 
-Setting up the environment on Linux is straightforward. Please refer to the official documentation or online resources if you encounter any issues.
+Configurar o ambiente no Linux é direto. Consulte a documentação oficial ou recursos online se encontrar algum problema.
 
 ### Windows
 
-#### Step 1: Install Make
+#### Passo 1: Instalar Make
 
-1. Install Chocolatey from [here](https://chocolatey.org/install).
-2. Open PowerShell as an administrator and run:
+1. Instale o Chocolatey a partir [aqui](https://chocolatey.org/install).
+2. Abra o PowerShell como administrador e execute:
 
     ```powershell
     choco install make
     ```
 
-3. If Python or OpenJDK/Java is not installed, you can install them via Chocolatey as well.
+3. Se Python ou OpenJDK/Java não estiverem instalados, você pode instalá-los via Chocolatey também.
 
-#### Step 2: Install GCC
+#### Passo 2: Instalar GCC
 
-1. Download MinGW from [SourceForge](https://sourceforge.net/projects/mingw/).
-2. Run the installer as an administrator and follow the installation steps. On the installation manager screen, select the option with `gcc - g++`.
-
-    <p align="center">
-      <img src="readmeImgs/z.png" alt="GCC Installation">
-    </p>
-
-3. Go to the "Installation" menu at the top and click "Apply Changes".
-
-#### Step 3: Configure Environment Variables
-
-1. Search for "Environment Variables" in the Start menu and open it.
+1. Baixe o MinGW do [SourceForge](https://sourceforge.net/projects/mingw/).
+2. Execute o instalador como administrador e siga os passos de instalação. Na tela do gerenciador de instalação, selecione a opção com `gcc - g++`.
 
     <p align="center">
-      <img src="readmeImgs/w.png" alt="Environment Variables">
+      <img src="readmeImgs/z.png" alt="Instalação do GCC">
     </p>
 
-2. Click on "Environment Variables".
-3. Select the "Path" variable and click "Edit".
+3. Vá ao menu "Installation" no topo e clique em "Apply Changes".
+
+#### Passo 3: Configurar Variáveis de Ambiente
+
+1. Procure por "Environment Variables" no menu Iniciar e abra.
 
     <p align="center">
-      <img src="readmeImgs/a.png" alt="Edit Path">
+      <img src="readmeImgs/w.png" alt="Variáveis de Ambiente">
     </p>
 
-4. Add a new entry with the path where GCC was installed, typically: ``C:\MinGW\bin``
+2. Clique em "Environment Variables".
+3. Selecione a variável "Path" e clique em "Edit".
 
-5. Confirm the changes. To verify the installation, open PowerShell and run:
+    <p align="center">
+      <img src="readmeImgs/a.png" alt="Editar Path">
+    </p>
+
+4. Adicione uma nova entrada com o caminho onde o GCC foi instalado, tipicamente: ``C:\MinGWin``
+
+5. Confirme as alterações. Para verificar a instalação, abra o PowerShell e execute:
 
     ```bash
     gcc --version
     ```
 
     <p align="center">
-      <img src="readmeImgs/c.png" alt="GCC Version">
+      <img src="readmeImgs/c.png" alt="Versão do GCC">
     </p>
 
-6. Restart the computer to ensure all changes take effect.
+6. Reinicie o computador para garantir que todas as alterações tenham efeito.
 
-## Usage
+## Uso
 
-### Clone the Repository
+### Clonar o Repositório
 
-1. Use Git Clone or download a zip file
+1. Use Git Clone ou baixe um arquivo zip
     ```bash
     git clone https://github.com/caue-paiva/trabalho_poo.git
     ```
-2. Enter a folder
+2. Entre na pasta
     ```bash
     cd trabalho_poo
     ```
 
-### Run the Program
+### Executar o Programa
 
 #### Linux
 
-1. Build the project
+1. Construa o projeto
     ```bash
-    make
+    make compile
     ```
 
-2. Run the server and interface
+2. Execute o servidor e a interface
     ```bash
     make run
     ```
 
 #### Windows
 
-1. Clean previous builds (important for python socket)
+1. Limpe construções anteriores (importante para soquete Python)
     ```powershell
     make clean
     ```
 
-2. Build the project
+2. Construa o projeto
     ```powershell
-    make
+    make compile
     ```
 
-3. Run the server
+3. Execute o servidor
     ```powershell
     make run_server
     ```
 
-4. In another PowerShell window, run the interface:
+4. Em outra janela do PowerShell, execute a interface:
     ```powershell
     make run_interface
     ```
 
-## Project Structure
+## Estrutura do Projeto
 
-### Graphical User Interface (GUI)
+### Interface Gráfica do Usuário (GUI)
 
-- Load FIFA data files.
-- Search for players by ID, age, name, nationality, and club.
-- Display search results and allow selection for detailed view and editing.
-- Delete player records.
+- Mostrar todos os Jogadores no arquivo FIFA 17-23
+- Pesquisar jogadores por ID, idade, nome, nacionalidade e clube.
+- Exibir resultados de pesquisa e permitir seleção para visualização detalhada e edição.
+- Excluir registros de jogadores.
 
-### Server and Communication
+### Servidor e Comunicação
 
-- The GUI connects to a Python server using sockets.
-- The Python server translates commands and interacts with a C program to manipulate the data files.
-- Each GUI connection has its own copy of the indexed file.
+- A GUI se conecta a um servidor Python usando socket.
+- O servidor Python traduz comandos e interage com um programa em C para manipular os arquivos de dados.
+- Cada conexão da GUI tem sua própria cópia do arquivo indexado.
 
-## Important Notes
+## Notas Importantes
 
-- The system is designed to run on both Windows and Linux.
+- O sistema é projetado para rodar tanto no Windows quanto no Linux.
 
-## Additional Information
+## Informações Adicionais
 
-Project developed for the [Object Oriented Programming](https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=SSC0103&codcur=55041&codhab=0) course at the Institute of Mathematics and Computing, University of São Paulo.
+Projeto desenvolvido para o curso de [Programação Orientada a Objetos](https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=SSC0103&codcur=55041&codhab=0) no Instituto de Matemática e Computação, Universidade de São Paulo.

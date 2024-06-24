@@ -1,6 +1,16 @@
 from TrabalhoArquivosHandler import TrabalhoArquivosHandler
 
+
+
 class ClientMessagesHandler:
+
+   """
+   Classe para transformar mensagens do client do socket em JAVA em comandos para a classe de handler do trabalho de arquivos
+   Serve de uma ponte para a comunicação do socket e a comunicação com o trabalho de arquivos
+
+   Essa classe é instanciada para cada cliente com seu ID único, desse modo ao ser instanciada essa classe compila o CSV em binário
+   e pode limpar os binários de clientes antigos.
+   """
 
    __ArquivosHandler: TrabalhoArquivosHandler = TrabalhoArquivosHandler() #objeto estático interno da classe, é  a interface com o trabalho de arquivo
 
@@ -37,24 +47,34 @@ class ClientMessagesHandler:
 
          case "2": #printa todos jogadores
             result = self.__ArquivosHandler.show_all_players(self.client_bin_data_file)
-            print(f"Resultado da funcionalidade 2: {result}") # Adicione este log para depurar o resultado
+            if result:
+               print("Comando: buscou todos os jogadores")
+            #print(f"Resultado da funcionalidade 2: {result}") 
             return result
          
          case "3": #procura jogador(es)
             result = self.__ArquivosHandler.search_players(self.client_bin_data_file,funct_params)
-            print(f"Resultado da funcionalidade 3: {result}") # Adicione este log para depurar o resultado
+            if result:
+               print("Comando: pesquisou por um jogador")
+            #print(f"Resultado da funcionalidade 3: {result}") 
             return result
          
          case "5": #deleta um jogador
             result:bool =  self.__ArquivosHandler.delete_players(self.client_bin_data_file,self.client_bin_index_file,funct_params)
+            if result:
+             print("Comando: deletou um jogador")
             return "True" if result else ""
          
          case "6": #insere um jogador
             result:bool  = self.__ArquivosHandler.insert_player(self.client_bin_data_file,self.client_bin_index_file,funct_params)
+            if result:
+               print("Comando: inseriu um jogador")
             return "True" if result else ""
          
          case "7": #atualiza um jogador
             result: bool = self.__ArquivosHandler.update_player(self.client_bin_data_file,self.client_bin_index_file,funct_params)
+            if result:
+               print("Comando: atualizou um jogador")
             return "True" if result else ""
          
       return "" #retorno de string vazia caso o comando n seja um desses

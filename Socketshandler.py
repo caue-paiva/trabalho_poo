@@ -1,7 +1,15 @@
-import socket, threading, os
+import socket
 from ClientMessagesHandler import ClientMessagesHandler
 
+
+
 class SocketsHandler():
+
+    """
+    Classe em Python para trabalhar como o servidor do sistema de comunicação de Sockets, tem constantes de classe como o IP e a porta do servidor.
+    Seus métodos implementam loops infinitos onde o servidor espera receber e depois enviar mensagens relacionadas à funcionalidade para os clientes
+    """
+
     PORT = 9090
     MSG_BUFFER_SIZE = 1024
     ENCODING = "utf-8"
@@ -28,9 +36,7 @@ class SocketsHandler():
         while True:
             try:
                 message: str = client.recv(self.MSG_BUFFER_SIZE).decode(self.ENCODING) #recebe mensagem do cliente
-                print(f"Mensagem recebida do cliente: {message}") # Adicione este log para depurar a mensagem recebida
-                action_result: str = client_handler.run_functionality(message) #roda funcionalidade do trabalho de arquivos
-                print(action_result)
+                action_result: str = client_handler.run_functionality(message) #roda funcionalidade do trabalho de arquivos            
                 action_result2 = action_result.replace("\n", " | ").replace("Busca 1", "").replace("|", "", 1) #parsing na string
                 action_result2 = action_result2 + '\n' #coloca \n no final da str para servir como o delimitador final
                 encoded = action_result2.encode("utf-8") 
@@ -39,7 +45,6 @@ class SocketsHandler():
             except Exception as e:
                 removed_addr = self.clients.pop(client)  # remove cliente
                 client.close()  # fecha conexão com cliente
-                print(f"endereço removido {str(removed_addr[1])}")
                 break  # sai do loop
 
     def receive_messages(self) -> None:
@@ -55,7 +60,6 @@ class SocketsHandler():
                 print("recebeu id do cliente")
                 client_handler = ClientMessagesHandler(self.client_id,True) #instancia o handler do cliente
                 
-            print(f"conectou com endereço {str(adress[1])}")
             self.clients[client] = adress  # add cliente e seu endereço ao dict de clientes
             self.__handle_one_client(client, client_handler)
 
