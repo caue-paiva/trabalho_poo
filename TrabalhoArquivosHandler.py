@@ -73,11 +73,9 @@ class TrabalhoArquivosHandler():
       """
       run_exec_command: str = f"{self.run_exec_cmd}"
 
-      print(f"Executando comando: {stdin}") # Adicione este log para ver o comando que está sendo executado
       result = subprocess.run(run_exec_command,input=stdin,capture_output=True,text=True,shell=True,cwd=self.c_code_folder_path)
       if result.returncode != 0:
          raise RuntimeError(f"Falha ao executar comando com input {stdin}. Código de retorno: {result.stdout}. Erro: {result.stderr}")
-      print(f"Resultado do comando: {result.stdout}") # Adicione este log para ver a saída do comando
       return result.stdout
       
    def csv_to_binary(self, data_file_name:str, index_file_name:str)->None:
@@ -107,9 +105,7 @@ class TrabalhoArquivosHandler():
          club=player_fields.get("club","")
       )
 
-
       search_cmd: str = f"{search_info} \n{search_params}"
-      print(search_cmd)
       return self.__run_command(search_cmd)
    
    def __format_player_info(self, is_insertion:bool = False ,id:int = -1,age:int = -1,name:str = "",country:str ="" ,club:str = "")->str:

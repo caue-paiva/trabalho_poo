@@ -60,7 +60,6 @@ class SocketsHandler():
                 print("recebeu id do cliente")
                 client_handler = ClientMessagesHandler(self.client_id,True) #instancia o handler do cliente
                 
-            print(f"conectou com endereço {str(adress[1])}")
             self.clients[client] = adress  # add cliente e seu endereço ao dict de clientes
             self.__handle_one_client(client, client_handler)
 
