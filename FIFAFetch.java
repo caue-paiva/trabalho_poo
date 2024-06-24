@@ -6,6 +6,12 @@ import java.net.Socket;
 import java.util.List;
 
 public class FIFAFetch {
+
+    /*
+    Classe para permitir comunicação da GUI em java com o servidor socket em python, implementa métodos para requests de cada funcionalidade
+    da GUI
+    */
+
     private String serverAddress;
     private int serverPort;
     private  int client_id;
@@ -56,7 +62,6 @@ public class FIFAFetch {
 
     public List<FIFAPlayer> getPlayers(String request) {
         String return_str = this.sendRequest(request);
-        System.out.println("Mensagem recebida do servidor: " + return_str);
         if (return_str == null || return_str.isEmpty() || return_str.contains("inexistente")) {
             return null;
         }
@@ -89,10 +94,7 @@ public class FIFAFetch {
         if (!request.contains("7")) { // 7 é o código da funcionalidade da atualização
             return false;
         }
-        System.out.println(request);
-
         String return_str = this.sendRequest(request);
-        System.out.println(return_str);
         if (return_str == null) {
             return false;
         }

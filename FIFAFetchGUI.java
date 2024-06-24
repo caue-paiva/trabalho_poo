@@ -38,6 +38,11 @@ class RoundedTextField extends JTextField {
 }
 
 public class FIFAFetchGUI {
+
+	/*
+	Classe para criar a GUI onde o usuário pode interagir com os dados dos jogadores FIFA
+	*/
+
 	private static RoundedTextField idField, ageField, nameField, countryField, clubField;
 	private static JPanel resultPanel;
 	private static FIFAFetch fifaFetch;
@@ -355,7 +360,6 @@ public class FIFAFetchGUI {
 
 		// remove o jogador da lista e atualiza a exibição dos botões de jogador
 		Boolean resultado = FIFAFetchGUI.playersList.removeIf(player -> player.id == id);
-		System.out.println(resultado);
 		FIFAFetchGUI.showPlayersButtons();
 	}
 
