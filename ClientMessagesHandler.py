@@ -49,14 +49,14 @@ class ClientMessagesHandler:
             result = self.__ArquivosHandler.show_all_players(self.client_bin_data_file)
             if result:
                print("Comando: buscou todos os jogadores")
-            #print(f"Resultado da funcionalidade 2: {result}") # Adicione este log para depurar o resultado
+            #print(f"Resultado da funcionalidade 2: {result}") 
             return result
          
          case "3": #procura jogador(es)
             result = self.__ArquivosHandler.search_players(self.client_bin_data_file,funct_params)
             if result:
                print("Comando: pesquisou por um jogador")
-            #print(f"Resultado da funcionalidade 3: {result}") # Adicione este log para depurar o resultado
+            #print(f"Resultado da funcionalidade 3: {result}") 
             return result
          
          case "5": #deleta um jogador
