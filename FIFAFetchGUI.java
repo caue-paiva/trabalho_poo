@@ -50,6 +50,32 @@ public class FIFAFetchGUI {
 	private static boolean showEditButtons = false; // seta um estado para o botão de edição
 
 	public static void createAndShowGUI() {
+
+    	// Mostrar uma janela de diálogo para inserir o endereço do servidor (IP e porta)
+    	JTextField addressField = new JTextField();
+    	JRadioButton defaultAddressButton = new JRadioButton("Use Default Address (127.0.0.1)");
+    	defaultAddressButton.setSelected(true); // Seleciona o botão de opção padrão
+		String serverAddress;
+    	Object[] message = {
+    	    "Server Address (IP):", addressField,
+    	    defaultAddressButton
+    	};
+
+    	int option = JOptionPane.showConfirmDialog(null, message, "Enter Server Address", JOptionPane.OK_CANCEL_OPTION);
+    	if (option == JOptionPane.OK_OPTION) {
+    	    if (defaultAddressButton.isSelected()) {
+    	        serverAddress = "127.0.0.1";
+    	    } else {
+    	        serverAddress = addressField.getText();
+				if (!serverAddress.matches("^\\d{1,3}(\\.\\d{1,3}){3}$")) {
+					JOptionPane.showMessageDialog(null, "Invalid address format. Please enter a valid IP address.", "Error", JOptionPane.ERROR_MESSAGE);
+    	            return; // Se o endereço não for válido, não continua com a criação da GUI
+    	        }
+    	    }
+    	} else {
+    	    return; // Se o usuário cancelar, não continua com a criação da GUI
+    	}
+
 		JFrame frame = new JFrame("FIFA Player Fetch");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(1013, 568);
@@ -144,7 +170,7 @@ public class FIFAFetchGUI {
 		frame.setVisible(true);
 
 		// inicializa o objeto fifaFetch
-		fifaFetch = new FIFAFetch();
+		fifaFetch = new FIFAFetch(serverAddress);
 	}
 
 	// função para buscar jogadores com base nos campos de entrada

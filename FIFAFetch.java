@@ -29,10 +29,10 @@ public class FIFAFetch {
         this.client_id = (int) (Math.random() * 1000); // gera um id aleatório para o cliente
     }
 
-    // construtor que recebe o endereço de ip e o port do servidor
-    public FIFAFetch(String serverAddress, int serverPort) {
+    // construtor que recebe o endereço de ip
+    public FIFAFetch(String serverAddress) {
         this.serverAddress = serverAddress;
-        this.serverPort = serverPort;
+        this.serverPort =  FIFAFetch.PORT;
         this.serverHasId = false;
         this.client_id = (int) (Math.random() * 1000); // gera um id aleatório para o cliente
     }
