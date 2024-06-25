@@ -13,7 +13,7 @@ O Projeto Banco de Dados FIFA é um aplicativo desktop, multiplataforma, desenvo
 
 ### Funcionalidades
 
-- **Carregar dados**: Carrega arquivos de dados de jogadores FIFA entre os anos 2017-23, esse arquivo foi disponibilizado na disciplina de arquivos.
+- **Carregar dados**: Carrega um arquivo de dados dos jogadores da FIFA entre os anos 2017-23, esse arquivo foi disponibilizado na disciplina de organização de arquivos e foi usado como base para o desenvolvimento dos trabalhos práticos.
 - **Pesquisar**: Pesquisa jogadores usando vários critérios.
 - **Visualizar e Editar**: Visualiza informações detalhadas dos jogadores, edita e atualiza registros.
 - **Excluir**: Remove registros de jogadores do banco de dados.
